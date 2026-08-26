@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>土地詳情｜義鼎不動產</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+:root { --leading: 24px; --half: 12px; --edge: clamp(20px, 5vw, 72px); --dark: var(--color-accent-900); }
+body { margin: 0; text-wrap: pretty; }
+a { color: var(--color-accent-300); }
+a:hover { color: var(--color-accent-200); }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 0 var(--edge); }
+.site-nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: var(--space-6);
+  padding: var(--space-4) clamp(20px, 5vw, 72px); background: rgba(29,45,61,.97); backdrop-filter: blur(8px); color: #fff; }
+.nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px;
+  letter-spacing: 0.08em; text-transform: uppercase; margin-right: auto; text-decoration: none; color: #fff; }
+.nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+.nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px; font-family: var(--font-heading);
+  letter-spacing: 0.04em; text-transform: uppercase; transition: color .2s; }
+.nav-links a:hover { color: #fff; }
+@media (max-width: 768px) { .nav-links { display: none; } }
+.detail-section { background: var(--color-bg); padding: calc(3 * var(--leading)) 0 calc(4 * var(--leading)); }
+.breadcrumb { font-size: 13px; color: color-mix(in srgb, var(--color-text) 55%, transparent); margin-bottom: var(--leading); }
+.breadcrumb a { color: var(--color-accent-700); text-decoration: none; }
+.detail-img { aspect-ratio: 16/9; background: var(--color-accent-800); border: 1px solid var(--color-divider);
+  position: relative; overflow: visible; margin-bottom: calc(1.5 * var(--leading));
+  display: flex; align-items: center; justify-content: center; color: var(--color-accent-400);
+  font-family: var(--font-heading); letter-spacing: 0.06em; text-transform: uppercase; }
+.detail-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.detail-img > .corner { position: absolute; width: 13px; height: 13px; color: color-mix(in srgb, var(--color-text) 55%, transparent); pointer-events: none; }
+.detail-img > .corner::before { content: ""; position: absolute; left: 6px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.detail-img > .corner::after { content: ""; position: absolute; top: 6px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.detail-img > .corner.tl { top: -7px; left: -7px; }
+.detail-img > .corner.tr { top: -7px; right: -7px; }
+.detail-img > .corner.bl { bottom: -7px; left: -7px; }
+.detail-img > .corner.br { bottom: -7px; right: -7px; }
+.img-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px;
+  background: rgba(29,45,61,.6); color: #fff; border: none; cursor: pointer; display: none;
+  align-items: center; justify-content: center; font-size: 20px; z-index: 3; transition: background .2s; }
+.img-nav:hover { background: rgba(29,45,61,.85); }
+.img-nav.show { display: flex; }
+.img-nav.prev { left: 12px; }
+.img-nav.next { right: 12px; }
+.img-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: none; gap: 6px; z-index: 3; }
+.img-dots.show { display: flex; }
+.img-dots span { width: 6px; height: 6px; background: rgba(255,255,255,.5); }
+.img-dots span.active { background: #fff; }
+.detail-tag { display: inline-block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #fff; background: var(--color-accent); padding: 5px 14px; margin-bottom: var(--space-3); }
+.detail-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(28px, 4vw, 40px); line-height: 1.15; margin: 0 0 var(--space-3); }
+.detail-loc { font-size: 16px; color: var(--color-accent-700); margin: 0 0 var(--leading); }
+.detail-desc { font-size: 16px; line-height: 1.8; color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  max-width: 65ch; margin: 0 0 calc(1.5 * var(--leading)); }
+.detail-cta { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+.site-footer { background: var(--dark); color: rgba(255,255,255,.5); padding: calc(2 * var(--leading)) 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--leading); }
+.footer-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 16px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.footer-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+.footer-links a { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; transition: color .2s; }
+.footer-links a:hover { color: rgba(255,255,255,.8); }
+.footer-copy { width: 100%; font-size: 12px; color: rgba(255,255,255,.3); border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: var(--leading); margin-top: var(--half); }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <a href="index.html" class="nav-brand">義鼎不動產</a>
+  <ul class="nav-links">
+    <li><a href="index.html">首頁</a></li>
+    <li><a href="projects.html">精選土地</a></li>
+    <li><a href="articles.html">建築美學</a></li>
+  </ul>
+</nav>
+<section class="detail-section">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="projects.html">精選土地</a> / <span id="bcTitle"></span></div>
+    <div class="detail-img"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><span id="imgPlaceholder">建築透視圖</span><button type="button" class="img-nav prev" id="imgPrev" aria-label="上一張">‹</button><button type="button" class="img-nav next" id="imgNext" aria-label="下一張">›</button><div class="img-dots" id="imgDots"></div></div>
+    <span class="detail-tag" id="dTag"></span>
+    <h1 class="detail-title" id="dTitle"></h1>
+    <p class="detail-loc" id="dLoc"></p>
+    <p class="detail-desc" id="dDesc"></p>
+    <div class="detail-cta">
+      <button type="button" class="btn btn-primary" onclick="location.href='https://yi-ding.com.tw/edm/eCard/0130.html'"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none">洽詢郭志誠 0938-188-881</a></button>
+      <button type="button" class="btn btn-ghost" onclick="location.href='projects.html'">返回列表</button>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-brand"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none; color: inherit;">土開 / 建設 / 規劃<br>郭志誠 0938-188-881</a></span>
+      <ul class="footer-links">
+        <li><a href="index.html">首頁</a></li>
+        <li><a href="projects.html">精選土地</a></li>
+        <li><a href="articles.html">建築美學</a></li>
+        <li><a href="https://yi-ding.com.tw/edm/eCard/0130.html">聯絡我們</a></li>
+      </ul>
+      <div class="footer-copy">© 2026 義鼎不動產有限公司 | 專業土地開發 . 不動產企畫行銷 |</div>
+    </div>
+  </div>
+</footer>
+<script>
+const listings = {
+  1: { tag: "建地", title: "安南高級社區 840坪建地", loc: "台南市安南區 · 高級住宅社區", desc: "840坪完整方正基地，位處安南高級住宅社區，適合低密度別墅或集合住宅開發。", images: ["land-annan-1.jpg", "land-annan-2.jpg", "land-annan-3.jpg", "land-annan-4.jpg"] },
+  2: { tag: "建地", title: "高雄美術館 近捷運精選商業地", loc: "高雄市鼓山區龍中段 · 近捷運站", desc: "美術館特區精選商業用地，緊鄰捷運站，人流與商業機能俱佳，開發彈性高。", images: ["land-ksart-1.jpg", "land-ksart-2.jpg", "land-ksart-3.jpg", "land-ksart-4.jpg"] },
+  3: { tag: "工業地", title: "仁德 近萬坪甲種工業地", loc: "台南市仁德區 · 甲種工業用地", desc: "近萬坪甲種工業用地，適合危險品物流倉儲、高汙染產業，稀有大面積標的。", images: ["ind-rende-1.jpg", "ind-rende-2.jpg", "ind-rende-3.jpg", "ind-rende-4.jpg"] },
+  4: { tag: "工業地", title: "雲林科技園 丁建7638坪", loc: "雲林科技工業園區 · 丁種建築用地", desc: "雲林科技工業園區7638坪丁建用地，完整基礎設施，適合大型製造及研發廠區。", images: ["ind-yunlin-1.jpg", "ind-yunlin-2.jpg", "ind-yunlin-3.jpg", "ind-yunlin-4.jpg", "ind-yunlin-5.jpg", "ind-yunlin-6.jpg"] },
+  5: { tag: "商辦", title: "近衛武營國家音樂廳 商務旅館", loc: "高雄市鳳山區 · 衛武營藝文特區", desc: "緊鄰衛武營國家藝術文化中心，觀光與商務客源穩定，適合商務旅館經營。", images: ["com-wwy-1.jpg", "com-wwy-2.jpg", "com-wwy-3.jpg", "com-wwy-4.jpg"] },
+  6: { tag: "廠房", title: "南區 2992坪廠房", loc: "台南市南區 · 現成廠房", desc: "2992坪現成廠房，格局完整、進出動線良好，可立即進駐生產或倉儲使用。", images: ["fac-nanqu-1.jpg", "fac-nanqu-2.jpg", "fac-nanqu-3.jpg", "fac-nanqu-4.jpg"] },
+  7: { tag: "廠房", title: "台南仁德保安工業區 丁建廠房", loc: "台南市仁德區保安段 · 丁種建築用地", desc: "仁德保安段丁建廠房，鄰近保安車站與台一線，交通便捷，適合製造及物流。", images: ["fac-baoan-1.jpg", "fac-baoan-2.jpg", "fac-baoan-3.jpg", "fac-baoan-4.jpg", "fac-baoan-5.jpg"] }
+};
+const id = new URLSearchParams(location.search).get('id');
+const d = listings[id] || listings[1];
+document.getElementById('bcTitle').textContent = d.title;
+document.getElementById('dTag').textContent = d.tag;
+document.getElementById('dTitle').textContent = d.title;
+document.getElementById('dLoc').textContent = d.loc;
+document.getElementById('dDesc').textContent = d.desc;
+document.title = d.title + '｜義鼎不動產';
+if (d.imgRes && window.__resources && window.__resources[d.imgRes]) {
+  const ph = document.getElementById('imgPlaceholder');
+  const img = document.createElement('img');
+  img.src = window.__resources[d.imgRes]; img.alt = d.title;
+  ph.replaceWith(img);
+}
+if (d.images && d.images.length) {
+  const ph = document.getElementById('imgPlaceholder');
+  const imgEl = document.createElement('img');
+  imgEl.alt = d.title;
+  ph.replaceWith(imgEl);
+  let idx = 0;
+  const dotsWrap = document.getElementById('imgDots');
+  const render = () => {
+    imgEl.src = d.images[idx];
+    dotsWrap.innerHTML = '';
+    d.images.forEach((_, i) => {
+      const dot = document.createElement('span');
+      if (i === idx) dot.className = 'active';
+      dotsWrap.appendChild(dot);
+    });
+  };
+  render();
+  if (d.images.length > 1) {
+    document.getElementById('imgPrev').classList.add('show');
+    document.getElementById('imgNext').classList.add('show');
+    dotsWrap.classList.add('show');
+    document.getElementById('imgPrev').addEventListener('click', () => { idx = (idx - 1 + d.images.length) % d.images.length; render(); });
+    document.getElementById('imgNext').addEventListener('click', () => { idx = (idx + 1) % d.images.length; render(); });
+  }
+}
+</script>
+</body>
+</html>

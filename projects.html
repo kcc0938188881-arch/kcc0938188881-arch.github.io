@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>精選土地｜義鼎不動產</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+:root { --leading: 24px; --half: 12px; --edge: clamp(20px, 5vw, 72px); --dark: var(--color-accent-900); }
+html { scroll-behavior: smooth; }
+body { margin: 0; text-wrap: pretty; }
+a { color: var(--color-accent-300); }
+a:hover { color: var(--color-accent-200); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--edge); }
+/* NAV */
+.site-nav { position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: var(--space-4) clamp(20px, 5vw, 72px);
+  background: rgba(29,45,61,.97); backdrop-filter: blur(8px); color: #fff; }
+.nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: auto;
+  text-decoration: none; color: #fff; }
+.nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+.nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px;
+  font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase; transition: color .2s; }
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+@media (max-width: 768px) { .nav-links { display: none; } }
+/* PAGE HEADER */
+.page-header { background: var(--dark); padding: calc(5 * var(--leading)) var(--edge) calc(2 * var(--leading)); }
+.page-header .wrap { max-width: 1200px; }
+.page-kicker { display: block; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--color-accent-400); font-family: var(--font-heading); margin-bottom: var(--half); }
+.page-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(32px, 5vw, 56px); line-height: 1.08; letter-spacing: 0.02em;
+  text-transform: uppercase; color: #fff; margin: 0; }
+.page-sub { font-size: 16px; line-height: var(--leading); color: rgba(255,255,255,.5);
+  max-width: 50ch; margin: var(--leading) 0 0; }
+/* FILTER */
+.filter-bar { background: var(--color-bg); border-bottom: 1px solid var(--color-divider);
+  padding: var(--leading) 0; }
+.filter-row { display: flex; gap: var(--space-4); flex-wrap: wrap; align-items: center; }
+.filter-btn { font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.04em;
+  text-transform: uppercase; padding: 6px 16px; border: 1px solid var(--color-divider);
+  background: none; color: var(--color-text); cursor: pointer; transition: all .2s; }
+.filter-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.filter-btn.active { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+/* GRID */
+.projects-section { background: var(--color-bg); padding: calc(2 * var(--leading)) 0 calc(4 * var(--leading)); }
+.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 32px); }
+.project-card { position: relative; border: 1px solid var(--color-divider);
+  overflow: visible; cursor: pointer; transition: border-color .2s; text-decoration: none; color: inherit; }
+.project-card:hover { border-color: var(--color-accent); }
+.project-card > .corner { position: absolute; width: 11px; height: 11px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent); pointer-events: none; }
+.project-card > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.project-card > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.project-card > .corner.tl { top: -6px; left: -6px; }
+.project-card > .corner.tr { top: -6px; right: -6px; }
+.project-card > .corner.bl { bottom: -6px; left: -6px; }
+.project-card > .corner.br { bottom: -6px; right: -6px; }
+.project-img { aspect-ratio: 4/3; background: var(--color-accent-800);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-accent-400); position: relative; }
+.project-img::after { content: ""; position: absolute; inset: 0;
+  background: var(--color-accent); mix-blend-mode: color; opacity: .5; }
+.project-info { padding: var(--leading); }
+.project-tag { display: inline-block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-accent-700); margin-bottom: var(--space-2); }
+.project-name { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; line-height: 1.2; letter-spacing: 0.02em; margin: 0; }
+.project-loc { font-size: 13px; color: color-mix(in srgb, var(--color-text) 60%, transparent); margin-top: var(--space-2); }
+.project-desc { font-size: 14px; line-height: 1.6; color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  margin-top: var(--space-3); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 900px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .projects-grid { grid-template-columns: 1fr; } }
+/* FOOTER */
+.site-footer { background: var(--dark); color: rgba(255,255,255,.5); padding: calc(2 * var(--leading)) 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--leading); }
+.footer-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.footer-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+.footer-links a { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; transition: color .2s; }
+.footer-links a:hover { color: rgba(255,255,255,.8); }
+.footer-copy { width: 100%; font-size: 12px; color: rgba(255,255,255,.3);
+  border-top: 1px solid rgba(255,255,255,.08); padding-top: var(--leading); margin-top: var(--half); }
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <a href="https://www.yi-ding.com.tw/" class="nav-brand" style="color: var(--color-neutral-100); font-weight: normal;">義鼎不動產有限公司 | 專業土地開發 . 不動產企畫行銷 |</a>
+  <ul class="nav-links">
+    <li><a href="index.html">首頁</a></li>
+    <li><a href="projects.html" class="active">精選土地</a></li>
+    <li><a href="articles.html">建築美學</a></li>
+    <li><a href="index.html#brand">品牌介紹</a></li>
+    <li><a href="https://yi-ding.com.tw/edm/eCard/0130.html">聯絡我們</a></li>
+  </ul>
+</nav>
+<header class="page-header">
+  <div class="wrap">
+    <span class="page-kicker">Property · 興地業</span>
+    <h1 class="page-title">精選土地</h1>
+    <p class="page-sub" style="width: 527px; height: 48px">嚴選指標區域、精華地段且具未來發展性標的，從市中心豪邸、企業商辦到科技廠房，為您呈現當前最受矚目的不動產項目。</p>
+  </div>
+</header>
+<div class="filter-bar">
+  <div class="wrap">
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="presale">建地</button>
+      <button class="filter-btn" data-filter="selling">工業地</button>
+      <button class="filter-btn" data-filter="upcoming">商辦</button>
+      <button class="filter-btn" data-filter="commercial">廠房</button>
+    </div>
+  </div>
+</div>
+<section class="projects-section">
+  <div class="wrap">
+    <div class="projects-grid">
+      <a class="project-card reveal" data-type="presale" href="detail.html?id=1">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="land-annan-1.jpg" alt="安南高級社區 840坪建地" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">建地</span>
+          <h3 class="project-name">安南高級社區 840坪建地</h3>
+          <p class="project-loc">台南市安南區 · 高級住宅社區</p>
+          <p class="project-desc">840坪完整方正基地，位處安南高級住宅社區，適合低密度別墅或集合住宅開發。</p>
+        </div>
+      </a>
+      <a class="project-card reveal" data-type="presale" href="detail.html?id=2">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="land-ksart-1.jpg" alt="高雄美術館 近捷運精選商業地" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">建地</span>
+          <h3 class="project-name">高雄美術館 近捷運精選商業地</h3>
+          <p class="project-loc">高雄市鼓山區龍中段 · 近捷運站</p>
+          <p class="project-desc">美術館特區精選商業用地，緊鄰捷運站，人流與商業機能俱佳，開發彈性高。</p>
+        </div>
+      </a>
+      <a class="project-card reveal" data-type="selling" href="detail.html?id=3">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="ind-rende-1.jpg" alt="仁德 近萬坪甲種工業地" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">工業地</span>
+          <h3 class="project-name">仁德 近萬坪甲種工業地</h3>
+          <p class="project-loc">台南市仁德區 · 甲種工業用地</p>
+          <p class="project-desc">近萬坪甲種工業用地，適合危險品物流倉儲、高汙染產業，稀有大面積標的。</p>
+        </div>
+      </a>
+      <a class="project-card reveal" data-type="selling" href="detail.html?id=4">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="ind-yunlin-1.jpg" alt="雲林科技園 丁建7638坪" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">工業地</span>
+          <h3 class="project-name">雲林科技園 丁建7638坪</h3>
+          <p class="project-loc">雲林科技工業園區 · 丁種建築用地</p>
+          <p class="project-desc">雲林科技工業園區7638坪丁建用地，完整基礎設施，適合大型製造及研發廠區。</p>
+        </div>
+      </a>
+      <a class="project-card reveal" data-type="upcoming" href="detail.html?id=5">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="com-wwy-1.jpg" alt="近衛武營國家音樂廳 商務旅館" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">商辦</span>
+          <h3 class="project-name">近衛武營國家音樂廳 商務旅館</h3>
+          <p class="project-loc">高雄市鳳山區 · 衛武營藝文特區</p>
+          <p class="project-desc">緊鄰衛武營國家藝術文化中心，觀光與商務客源穩定，適合商務旅館經營。</p>
+        </div>
+      </a>
+      <a class="project-card reveal" data-type="commercial" href="detail.html?id=6">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="fac-nanqu-1.jpg" alt="南區 2992坪廠房" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">廠房</span>
+          <h3 class="project-name">南區 2992坪廠房</h3>
+          <p class="project-loc">台南市南區 · 現成廠房</p>
+          <p class="project-desc">2992坪現成廠房，格局完整、進出動線良好，可立即進駐生產或倉儲使用。</p>
+        </div>
+      </a>
+      <a class="project-card reveal" data-type="commercial" href="detail.html?id=7">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><img src="fac-baoan-1.jpg" alt="台南仁德保安工業區 丁建廠房" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="project-info">
+          <span class="project-tag">廠房</span>
+          <h3 class="project-name">台南仁德保安工業區 丁建廠房</h3>
+          <p class="project-loc">台南市仁德區保安段 · 丁種建築用地</p>
+          <p class="project-desc">仁德保安段丁建廠房，鄰近保安車站與台一線，交通便捷，適合製造及物流。</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-brand"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none; color: inherit;">土開 / 建設 / 規劃<br>郭志誠 0938-188-881</a></span>
+      <ul class="footer-links">
+        <li><a href="index.html">首頁</a></li>
+        <li><a href="https://www.youtube.com/@JasonKuo1881">精選土地</a></li>
+        <li><a href="articles.html">建築美學</a></li>
+        <li><a href="https://yi-ding.com.tw/edm/eCard/0130.html">聯絡我們</a></li>
+      </ul>
+      <div class="footer-copy">© 2026 義鼎不動產有限公司 | 專業土地開發 . 不動產企畫行銷 |</div>
+    </div>
+  </div>
+</footer>
+<script>
+// Filter
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.project-card').forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.type === f) ? '' : 'none';
+    });
+  });
+});
+const urlFilter = new URLSearchParams(location.search).get('filter');
+if (urlFilter) {
+  const btn = document.querySelector('.filter-btn[data-filter="' + urlFilter + '"]');
+  if (btn) btn.click();
+}
+// Reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

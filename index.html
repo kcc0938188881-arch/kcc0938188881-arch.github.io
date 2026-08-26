@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>義鼎不動產｜專業土地開發</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+:root {
+  --leading: 24px;
+  --half: 12px;
+  --edge: clamp(20px, 5vw, 72px);
+  --measure: 60ch;
+  --dark: var(--color-accent-900);
+  --dark-surface: var(--color-accent-800);
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; text-wrap: pretty; }
+a { color: var(--color-accent-300); }
+a:hover { color: var(--color-accent-200); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--edge); }
+/* — NAV — */
+.site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: var(--space-4) clamp(20px, 5vw, 72px);
+  background: linear-gradient(to bottom, rgba(29,45,61,.92), rgba(29,45,61,0));
+  color: #fff; transition: background .3s; }
+.site-nav.scrolled { background: rgba(29,45,61,.97); backdrop-filter: blur(8px); }
+.nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: auto; }
+.nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+.nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px;
+  font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase;
+  transition: color .2s; }
+.nav-links a:hover { color: #fff; }
+.nav-contact { font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 6px 16px; border: 1px solid rgba(255,255,255,.35);
+  color: #fff; background: none; cursor: pointer; transition: all .2s; }
+.nav-contact:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.6); }
+@media (max-width: 768px) { .nav-links { display: none; } }
+
+/* — HERO — */
+.hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end;
+  padding: 0 var(--edge) calc(4 * var(--leading));
+  background: var(--dark); overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; }
+.hero-bg .bg-photo { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; opacity: .3; mix-blend-mode: luminosity; }
+.hero-bg .diagonal { position: absolute; right: 0; top: 0; width: 55%; height: 100%;
+  background: var(--color-accent-700); clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+  opacity: .25; }
+.hero-grid { position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 60px 60px; }
+.hero-content { position: relative; z-index: 2; max-width: 900px; }
+.hero-kicker { display: block; font-size: 13px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--color-accent-400);
+  font-family: var(--font-heading); margin-bottom: var(--half); }
+.hero h1 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(42px, 7vw, 88px); line-height: 1.04;
+  letter-spacing: 0.02em; text-transform: uppercase; color: #fff; margin: 0; }
+.hero h1 .line { display: block; }
+.hero h1 .accent { color: var(--color-accent-300); }
+.hero-sub { font-size: 16px; line-height: var(--leading); color: rgba(255,255,255,.6);
+  max-width: 48ch; margin: calc(1.5 * var(--leading)) 0 0; }
+.hero-cta { display: flex; gap: var(--space-4); margin-top: var(--leading); flex-wrap: wrap; }
+.hero-cta .btn-primary { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+.hero-cta .btn-primary:hover { background: var(--color-accent-600); }
+.hero-cta .btn-ghost { color: rgba(255,255,255,.8); border-color: transparent; }
+.hero-cta .btn-ghost:hover { background: rgba(255,255,255,.08); }
+.corner-mark { position: absolute; width: 15px; height: 15px;
+  color: rgba(255,255,255,.2); pointer-events: none; }
+.corner-mark::before { content: ""; position: absolute; left: 7px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.corner-mark::after { content: ""; position: absolute; top: 7px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.hero .cm-tl { top: var(--edge); left: var(--edge); }
+.hero .cm-tr { top: var(--edge); right: var(--edge); }
+.hero .cm-br { bottom: calc(4 * var(--leading)); right: var(--edge); }
+
+
+
+/* — VISION IMAGE — */
+.vision { position: relative; overflow: hidden; background: var(--dark); }
+.vision-inner { position: relative; max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; }
+.vision-img-wrap { position: relative; overflow: visible; border: 1px solid rgba(255,255,255,.12); }
+.vision-img-wrap > .corner { position: absolute; width: 11px; height: 11px;
+  color: rgba(255,255,255,.25); pointer-events: none; }
+.vision-img-wrap > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.vision-img-wrap > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.vision-img-wrap > .corner.tl { top: -6px; left: -6px; }
+.vision-img-wrap > .corner.tr { top: -6px; right: -6px; }
+.vision-img-wrap > .corner.bl { bottom: -6px; left: -6px; }
+.vision-img-wrap > .corner.br { bottom: -6px; right: -6px; }
+.vision-img-wrap img { width: 100%; display: block; }
+.vision-img-wrap::after { content: ""; position: absolute; inset: 0;
+  background: var(--color-accent); mix-blend-mode: color; opacity: .45; pointer-events: none; }
+.vision-text { display: flex; flex-direction: column; justify-content: center;
+  padding: calc(3 * var(--leading)) clamp(24px, 4vw, 64px); color: #fff; }
+.vision-label { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-accent-400); font-family: var(--font-heading); margin-bottom: var(--half); }
+.vision-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(24px, 3vw, 36px); line-height: 1.15; letter-spacing: 0.02em;
+  text-transform: uppercase; margin: 0 0 var(--leading); }
+.vision-desc { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,.55); margin: 0; }
+@media (max-width: 768px) { .vision-inner { grid-template-columns: 1fr; }
+  .vision-text { padding: calc(2 * var(--leading)) var(--edge); } }
+.section { padding: calc(4 * var(--leading)) 0 calc(3 * var(--leading)); }
+.section-dark { background: var(--dark); color: #fff; }
+.section-light { background: var(--color-bg); color: var(--color-text); }
+.section-kicker { display: block; font-size: 13px; line-height: var(--half);
+  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+  color: var(--color-accent-700); font-feature-settings: "tnum" 1;
+  margin: 0 0 var(--half); }
+.section-dark .section-kicker { color: var(--color-accent-400); }
+.section-rule { height: 1px; border: 0; margin: 0 0 calc(var(--leading));
+  background: var(--color-divider); }
+.section-dark .section-rule { background: rgba(255,255,255,.12); }
+.section-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(28px, 4vw, 40px); line-height: 1.1; letter-spacing: 0.02em;
+  text-transform: uppercase; margin: 0 0 calc(1.5 * var(--leading)); }
+
+/* — PROJECTS CAROUSEL — */
+#projects .wrap { max-width: 1720px; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(20px, 2.4vw, 44px); }
+.project-card { position: relative; border: 1px solid var(--color-divider);
+  overflow: visible; cursor: pointer; transition: border-color .2s; text-decoration: none; color: inherit; display: block; }
+.project-badge { position: absolute; top: 0; left: 0; z-index: 2; background: var(--color-accent); color: #fff;
+  font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; }
+.project-card:hover { border-color: var(--color-accent); }
+.project-card > .corner { position: absolute; width: 11px; height: 11px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent); pointer-events: none; }
+.project-card > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.project-card > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.project-card > .corner.tl { top: -6px; left: -6px; }
+.project-card > .corner.tr { top: -6px; right: -6px; }
+.project-card > .corner.bl { bottom: -6px; left: -6px; }
+.project-card > .corner.br { bottom: -6px; right: -6px; }
+.project-img { aspect-ratio: 4/3; background: var(--color-accent-800);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-accent-400); overflow: hidden; position: relative; }
+.project-img::after { content: ""; position: absolute; inset: 0;
+  background: var(--color-accent); mix-blend-mode: color; opacity: .6; }
+.project-info { padding: var(--leading); }
+.project-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-accent-700); margin-bottom: var(--space-2); }
+.project-name { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; line-height: 1.2; letter-spacing: 0.02em; margin: 0; }
+.project-loc { font-size: 13px; color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  margin-top: var(--space-2); }
+.more-link { display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em;
+  text-transform: uppercase; text-decoration: none; margin-top: calc(1.5 * var(--leading)); }
+.section-light .more-link { color: var(--color-accent-700); }
+.section-light .more-link:hover { color: var(--color-accent); }
+.section-dark .more-link { color: var(--color-accent-300); }
+.section-dark .more-link:hover { color: var(--color-accent-200); }
+@media (max-width: 860px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .projects-grid { grid-template-columns: 1fr; } }
+
+/* — ARTICLES — */
+.articles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 32px); }
+.article-card { border: 1px solid rgba(255,255,255,.1); padding: var(--leading);
+  position: relative; overflow: visible; transition: border-color .2s; cursor: pointer; }
+.article-card:hover { border-color: var(--color-accent-400); }
+.article-card > .corner { position: absolute; width: 11px; height: 11px;
+  color: rgba(255,255,255,.2); pointer-events: none; }
+.article-card > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.article-card > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.article-card > .corner.tl { top: -6px; left: -6px; }
+.article-card > .corner.tr { top: -6px; right: -6px; }
+.article-card > .corner.bl { bottom: -6px; left: -6px; }
+.article-card > .corner.br { bottom: -6px; right: -6px; }
+.article-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-accent-400); }
+.article-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 18px; line-height: 1.3; margin: var(--space-3) 0 var(--space-2);
+  color: #fff; }
+.article-excerpt { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,.55);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 600px) { .articles-grid { grid-template-columns: 1fr; } }
+
+
+
+/* — BRAND — */
+.brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 96px); align-items: center; }
+.brand-text h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 28px; line-height: 1.2; text-transform: uppercase; margin: 0 0 var(--leading); color: #fff; }
+.brand-text p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,.6); margin: 0 0 var(--leading); }
+.brand-values { display: grid; grid-template-columns: 1fr 1fr; gap: var(--leading); }
+.brand-value { border: 1px solid rgba(255,255,255,.1); padding: var(--leading); position: relative; overflow: visible; }
+.brand-value > .corner { position: absolute; width: 11px; height: 11px;
+  color: rgba(255,255,255,.2); pointer-events: none; }
+.brand-value > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.brand-value > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.brand-value > .corner.tl { top: -6px; left: -6px; }
+.brand-value > .corner.tr { top: -6px; right: -6px; }
+.brand-value > .corner.bl { bottom: -6px; left: -6px; }
+.brand-value > .corner.br { bottom: -6px; right: -6px; }
+.brand-value h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-accent-300); margin: 0 0 var(--space-3); }
+.brand-value p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.5); margin: 0; }
+@media (max-width: 768px) { .brand-grid { grid-template-columns: 1fr; } }
+
+/* — CONTACT — */
+.contact-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 96px); }
+.contact-left { display: flex; gap: var(--leading); align-items: flex-start; }
+.contact-photo { width: 140px; flex-shrink: 0; border: 1px solid var(--color-divider); position: relative; overflow: visible; }
+.contact-photo > .corner { position: absolute; width: 11px; height: 11px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent); pointer-events: none; }
+.contact-photo > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.contact-photo > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.contact-photo > .corner.tl { top: -6px; left: -6px; }
+.contact-photo > .corner.tr { top: -6px; right: -6px; }
+.contact-photo > .corner.bl { bottom: -6px; left: -6px; }
+.contact-photo > .corner.br { bottom: -6px; right: -6px; }
+.contact-photo img { width: 100%; display: block; }
+.contact-info h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 28px; text-transform: uppercase; margin: 0 0 var(--space-2); }
+.contact-info .name-en { font-size: 14px; color: color-mix(in srgb, var(--color-text) 55%, transparent); margin: 0 0 var(--leading); }
+.contact-info p { font-size: 15px; line-height: 1.7; color: color-mix(in srgb, var(--color-text) 65%, transparent); margin: 0 0 var(--leading); }
+.contact-detail { font-size: 14px; line-height: 2; }
+.contact-detail strong { font-weight: 600; display: inline-block; width: 5em; color: var(--color-accent-700); }
+.contact-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.contact-form .input { background: var(--color-surface); }
+.contact-form .btn-primary { align-self: flex-start; }
+@media (max-width: 768px) { .contact-split { grid-template-columns: 1fr; } }
+
+/* — FOOTER — */
+.site-footer { background: var(--dark); color: rgba(255,255,255,.5); padding: calc(2 * var(--leading)) 0; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--leading); }
+.footer-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.footer-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
+.footer-links a { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; transition: color .2s; }
+.footer-links a:hover { color: rgba(255,255,255,.8); }
+.footer-copy { width: 100%; font-size: 12px; color: rgba(255,255,255,.3);
+  border-top: 1px solid rgba(255,255,255,.08); padding-top: var(--leading); margin-top: var(--half); }
+
+/* — SCROLL ANIMATIONS — */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav" id="siteNav">
+  <span class="nav-brand"><a href="https://www.yi-ding.com.tw/" style="text-decoration-line: none; color: inherit;">義鼎不動產</a></span>
+  <span class="nav-brand"></span>
+  <div style="font-size: 14px; line-height: 1; font-family: 'Barlow Condensed', system-ui, sans-serif; position: absolute; left: 196px; top: 22px"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none; color: inherit;">郭 志 誠 0938 - 188 - 881</a></div>
+  <a href="#" style="font-size: 14px; font-family: 'Barlow Condensed', system-ui, sans-serif; color: #FFFFFF; text-decoration-line: none">首頁</a>
+  <ul class="nav-links">
+    <li><a href="#projects">精選土地</a></li>
+    <li><a href="#articles">建築美學</a></li>
+    <li><a href="https://www.yi-ding.com.tw/about.php?pid=2">品牌介紹</a></li>
+  </ul>
+  <button type="button" class="nav-contact"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none;">聯絡我們</a></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="bg-photo"></div>
+    <div class="diagonal"></div>
+    <div class="hero-grid" style="left: -3px; top: -3px; position: absolute"></div>
+  </div>
+  <i class="corner-mark cm-tl"></i>
+  <i class="corner-mark cm-tr"></i>
+  <i class="corner-mark cm-br"></i>
+  <div class="hero-content">
+    <h1><span class="line">Building</span> <span class="line"><span class="accent" style="position: relative;">Tomorrow</span></span></h1>
+    <span class="hero-kicker">FROM VISION TO LANDMARK</span>
+    <p class="hero-sub">用建築師的眼睛找地，用開發商的邏輯造局<br><br>深耕台南、高雄，專注建地、工業用地與土地整合開發。<br><br><br>以顧客為導向，憑藉專業經營團隊與創新行銷策略，為客戶提供優質銷售服務。</p>
+    <div class="hero-cta">
+      <button type="button" class="btn btn-ghost"><a href="https://www.youtube.com/@JasonKuo1881" style="text-decoration-line: none; color: inherit;">精選土地<br></a></button>
+      <button type="button" class="btn btn-ghost"><a href="https://www.yi-ding.com.tw/about.php?pid=2" style="text-decoration-line: none; color: inherit;">品牌介紹 →</a></button>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section section-light" id="projects">
+  <div class="wrap">
+    <span class="section-kicker">01 · 興地業</span>
+    <hr class="section-rule" />
+    <h2 class="section-title">精選土地</h2>
+    <div class="projects-grid">
+      <a class="project-card blueprint" href="projects.html?filter=presale">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><span class="project-badge">建地</span><img src="./land-annan-1.jpg" alt="建地" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
+        <div class="project-info">
+          <div class="project-tag">台南高鐵特區</div>
+          <h3 class="project-name">3305坪 三面臨路建地</h3>
+          <p class="project-loc">適合企業總部、養生機構、住宅開發</p>
+        </div>
+      </a>
+      <a class="project-card blueprint" href="projects.html?filter=selling">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><span class="project-badge">工業地</span><img src="./ind-rende-1.jpg" alt="工業地" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
+        <div class="project-info">
+          <div class="project-tag">近台南高鐵特區</div>
+          <h3 class="project-name">近萬坪 甲種工業用地</h3>
+          <p class="project-loc">危險品物流倉儲 / 高汙染產業 精選用地</p>
+        </div>
+      </a>
+      <a class="project-card blueprint" href="projects.html?filter=upcoming">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><span class="project-badge">商辦</span><img src="./com-wwy-1.jpg" alt="商辦" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
+        <div class="project-info">
+          <div class="project-tag">台南南科旁</div>
+          <h3 class="project-name">692坪 特專區用地</h3>
+          <p class="project-loc">緊鄰南科、善化及新市區市中心</p>
+        </div>
+      </a>
+      <a class="project-card blueprint" href="projects.html?filter=commercial">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="project-img"><span class="project-badge">廠房</span><img src="./fac-nanqu-1.jpg" alt="廠房" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
+        <div class="project-info">
+          <div class="project-tag">台南高鐵特區 / 未來南科四期</div>
+          <h3 class="project-name">719坪 三面臨路建地</h3>
+          <p class="project-loc">近成大醫院沙崙分院、86快速道路</p>
+        </div>
+      </a>
+    </div>
+    <a href="projects.html" class="more-link">查看更多土地 →</a>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section class="section section-dark" id="articles">
+  <div class="wrap">
+    <span class="section-kicker">02 · 知天勢</span>
+    <hr class="section-rule" />
+    <h2 class="section-title">建築美學</h2>
+    <div class="articles-grid">
+      <div class="article-card reveal">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="article-tag">建築美學</span>
+        <h3 class="article-title">隈研吾攜手丹麥工匠，以木構裝置詮釋「木漏日」美學</h3>
+        <p class="article-excerpt">重新詮釋日式「木漏日」美學，隈研吾攜手丹麥工匠打造木構造裝置藝術，讓光影在建築間自然流動。</p>
+      </div>
+      <div class="article-card reveal">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="article-tag">市場趨勢</span>
+        <h3 class="article-title">桃園大有特區掌握「流量密碼」，冷清市況中一枝獨秀</h3>
+        <p class="article-excerpt">央行打炒房政策後房市趨冷，然而桃園大有特區個案在首購優先的貸款條件下，來人突破三位數。</p>
+      </div>
+      <div class="article-card reveal">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="article-tag">建築美學</span>
+        <h3 class="article-title">數千磚撐起漂浮屋頂，BAUEN 打造銀行分行空間宣言</h3>
+        <p class="article-excerpt">數千塊磚共同撐起一片漂浮屋頂，讓銀行分行的建築形式成為一份關於信任與社群的空間宣言。</p>
+      </div>
+      <div class="article-card reveal">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="article-tag">市場趨勢</span>
+        <h3 class="article-title">新光三越大有店原址將改建，桃園小天母再度成為話題</h3>
+        <p class="article-excerpt">素有「桃園小天母」美譽的大有生活圈，因新光三越原址改建計劃引發話題，宜居首選再受關注。</p>
+      </div>
+    </div>
+    <a href="articles.html" class="more-link">更多文章 →</a>
+  </div>
+</section>
+
+<!-- BRAND -->
+<section class="section section-dark" id="brand">
+  <div class="wrap">
+    <span class="section-kicker">03 · 尊人意</span>
+    <hr class="section-rule" />
+    <div class="brand-grid">
+      <div class="brand-text">
+        <h3>秉持信義，一言九鼎</h3>
+        <p>義鼎不動產深耕南台灣市場，以住宅不動產為主，並拓展至工業廠辦、辦公大樓、商業賣場等各類型商業不動產。公司憑藉專業經營團隊，豐富的不動產交易經驗與創新行銷策略，為地主、開發商打造安全的不動產交易平台，提供優質銷售服務。</p>
+        <p>將「土地」視為專注精耕的事業，重視人員證照與專業知識及經驗累積。<br><br>我們的願景是成為客戶最專業、值得信賴的團隊！</p>
+      </div>
+      <div class="brand-values">
+        <div class="brand-value">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4>決心</h4><p>堅守誠信及對客⼾、員⼯及社會的承諾。</p>
+        </div>
+        <div class="brand-value">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4>誠心</h4><p>以真誠態度面對每一位客戶，建立長期信賴。</p>
+        </div>
+        <div class="brand-value">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4>細心</h4><p>從委託到交地，每一環節都精準把關。</p>
+        </div>
+        <div class="brand-value">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4>愛心</h4><p>關懷社區、回饋社會，實踐企業公民責任。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section section-light" id="contact">
+  <div class="wrap">
+    <span class="section-kicker">04 · 聯絡我們</span>
+    <hr class="section-rule" />
+    <div class="contact-split">
+      <div class="contact-info">
+        <div class="contact-left">
+          <div class="contact-photo blueprint">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <img src="jason-kuo.jpg" alt="郭志誠" />
+          </div>
+          <div>
+            <h3>郭志誠</h3>
+            <p class="name-en">Jason Kuo</p>
+            <div class="contact-detail">
+              <div><strong>證號</strong>不動產營業員 108登字第342452號</div>
+              <div><strong></strong>建證字第5943號</div>
+              <div><strong>電話</strong>0938-188-881</div>
+              <div><strong>LINE</strong>KCCAA</div>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: var(--leading);">無論您是開發商、建設公司尋求專業土地服務，或是地主有不動產稅務、法規等疑問或想了解市場行情，歡迎與我們聯繫。</p>
+      </div>
+      <form class="contact-form" onsubmit="return false">
+        <div class="field"><label>姓名</label><input class="input" type="text" placeholder="您的姓名" /></div>
+        <div class="field"><label>電話</label><input class="input" type="tel" placeholder="聯絡電話" /></div>
+        <div class="field"><label>信箱</label><input class="input" type="email" placeholder="電子信箱" /></div>
+        <div class="field"><label>需求說明</label><textarea class="input" placeholder="請簡述您的需求"></textarea></div>
+        <button type="submit" class="btn btn-primary">送出表單</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-brand">義鼎不動產 | 專業土地開發 . 不動產企劃行銷 |</span>
+      <ul class="footer-links">
+        <li><a href="#projects">精選土地</a></li>
+        <li><a href="#articles">建築美學</a></li>
+        <li><a href="#brand">品牌介紹</a></li>
+        <li><a href="#contact">聯絡我們</a></li>
+      </ul>
+      <div class="footer-copy">© 2026 義鼎不動產有限公司</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Sticky nav background
+const nav = document.getElementById('siteNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+</script>
+</body>
+</html>
