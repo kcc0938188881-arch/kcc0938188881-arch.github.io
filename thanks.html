@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>已收到您的需求｜義鼎不動產</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+:root { --leading: 24px; --half: 12px; --edge: clamp(20px, 5vw, 72px); --dark: var(--color-accent-900); }
+body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark); color: #fff; text-wrap: pretty; }
+a { color: var(--color-accent-300); }
+a:hover { color: var(--color-accent-200); }
+.panel { position: relative; border: 1px solid rgba(255,255,255,.16); padding: calc(2.5 * var(--leading)) calc(2 * var(--leading)); margin: var(--edge); max-width: 560px; overflow: visible; }
+.panel > .corner { position: absolute; width: 13px; height: 13px; color: rgba(255,255,255,.3); pointer-events: none; }
+.panel > .corner::before { content: ""; position: absolute; left: 6px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.panel > .corner::after { content: ""; position: absolute; top: 6px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.panel > .corner.tl { top: -7px; left: -7px; }
+.panel > .corner.tr { top: -7px; right: -7px; }
+.panel > .corner.bl { bottom: -7px; left: -7px; }
+.panel > .corner.br { bottom: -7px; right: -7px; }
+.kicker { display: block; font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent-400); margin-bottom: var(--half); }
+h1 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(28px, 5vw, 40px); line-height: 1.15; letter-spacing: 0.02em; margin: 0 0 var(--leading); }
+p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.6); margin: 0 0 var(--leading); }
+.detail { font-size: 14px; line-height: 2; color: rgba(255,255,255,.7); margin-bottom: calc(1.5 * var(--leading)); }
+.detail strong { font-weight: 600; display: inline-block; width: 4.5em; color: var(--color-accent-300); }
+</style>
+</head>
+<body>
+<div class="panel">
+  <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+  <span class="kicker">Thank You</span>
+  <h1>已收到您的需求</h1>
+  <p>感謝您與義鼎不動產聯繫。您填寫的內容已送達，我們會盡快與您聯絡。若有急件，歡迎直接電話或 LINE 聯繫。</p>
+  <div class="detail">
+    <div><strong>郭志誠</strong>0938-188-881</div>
+    <div><strong>LINE</strong>KCCAA</div>
+  </div>
+  <a href="index.html" class="btn btn-ghost" style="color: var(--color-accent-300); border-color: rgba(255,255,255,.28);">← 回到首頁</a>
+</div>
+</body>
+</html>

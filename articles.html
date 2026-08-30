@@ -11,7 +11,7 @@ html { scroll-behavior: smooth; }
 body { margin: 0; text-wrap: pretty; }
 a { color: var(--color-accent-300); }
 a:hover { color: var(--color-accent-200); }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--edge); }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--edge); }
 /* NAV */
 .site-nav { position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; gap: var(--space-6);
@@ -19,14 +19,14 @@ a:hover { color: var(--color-accent-200); }
   background: rgba(29,45,61,.97); backdrop-filter: blur(8px); color: #fff; }
 .nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
   font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: auto;
-  text-decoration: none; color: #fff; }
+  text-decoration: none; color: #fff;  white-space: nowrap; }
 .nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px;
-  font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase; transition: color .2s; }
+  font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase; transition: color .2s;  white-space: nowrap; }
 .nav-links a:hover, .nav-links a.active { color: #fff; }
 @media (max-width: 768px) { .nav-links { display: none; } }
 /* HEADER */
-.page-header { background: var(--dark); padding: calc(5 * var(--leading)) var(--edge) calc(2 * var(--leading)); }
+.page-header { background: var(--dark); padding: calc(5 * var(--leading)) 0 calc(2 * var(--leading)); }
 .page-kicker { display: block; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--color-accent-400); font-family: var(--font-heading); margin-bottom: var(--half); }
 .page-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
@@ -34,19 +34,10 @@ a:hover { color: var(--color-accent-200); }
   text-transform: uppercase; color: #fff; margin: 0; }
 .page-sub { font-size: 16px; line-height: var(--leading); color: rgba(255,255,255,.5);
   max-width: 50ch; margin: var(--leading) 0 0; }
-/* TABS */
-.tabs-bar { background: var(--dark); border-bottom: 1px solid rgba(255,255,255,.1); }
-.tabs-row { display: flex; gap: 0; }
-.tab-btn { font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em;
-  text-transform: uppercase; padding: var(--leading) var(--space-6); background: none;
-  border: none; border-bottom: 2px solid transparent; color: rgba(255,255,255,.5);
-  cursor: pointer; transition: all .2s; }
-.tab-btn:hover { color: rgba(255,255,255,.8); }
-.tab-btn.active { color: #fff; border-bottom-color: var(--color-accent); }
 /* FEATURED */
 .featured { background: var(--dark); padding: calc(2 * var(--leading)) 0 calc(3 * var(--leading)); color: #fff; }
-.featured-card { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 64px);
-  align-items: center; border: 1px solid rgba(255,255,255,.1); padding: 0; position: relative; overflow: visible; }
+.featured-card { display: grid; grid-template-columns: 1fr; gap: 0;
+  border: 1px solid rgba(255,255,255,.1); padding: 0; position: relative; overflow: visible; }
 .featured-card > .corner { position: absolute; width: 11px; height: 11px;
   color: rgba(255,255,255,.2); pointer-events: none; }
 .featured-card > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
@@ -55,12 +46,8 @@ a:hover { color: var(--color-accent-200); }
 .featured-card > .corner.tr { top: -6px; right: -6px; }
 .featured-card > .corner.bl { bottom: -6px; left: -6px; }
 .featured-card > .corner.br { bottom: -6px; right: -6px; }
-.featured-img { aspect-ratio: 16/10; background: var(--color-accent-800);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--color-accent-400); position: relative; }
-.featured-img::after { content: ""; position: absolute; inset: 0;
-  background: var(--color-accent); mix-blend-mode: color; opacity: .4; }
+.featured-img { position: relative; background: var(--color-accent-800); overflow: hidden; }
+.featured-img img { width: 100%; height: auto; display: block; }
 .featured-body { padding: calc(1.5 * var(--leading)); }
 .featured-tag { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--color-accent-400); }
@@ -87,8 +74,10 @@ a:hover { color: var(--color-accent-200); }
   color: color-mix(in srgb, var(--color-text) 50%, transparent); font-feature-settings: "tnum" 1; }
 .row-content h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
   font-size: 17px; line-height: 1.3; margin: 0; }
-.row-content p { font-size: 14px; line-height: 1.5; color: color-mix(in srgb, var(--color-text) 60%, transparent);
-  margin: var(--space-2) 0 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.row-content p { font-size: 14px; line-height: 1.5; color: color-mix(in srgb, var(--color-text) 60%, transparent); margin: var(--space-2) 0 0; }
+.row-content .row-source { font-size: 12px; color: var(--color-accent-700); margin: var(--space-2) 0 0; }
+.featured-date { font-size: 13px; font-family: var(--font-heading); letter-spacing: 0.04em; color: rgba(255,255,255,.55); margin: var(--space-2) 0 0; }
+.featured-source { font-size: 12px; color: var(--color-accent-400); margin: 0 0 var(--leading); }
 .row-tag { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px;
   border: 1px solid var(--color-divider); color: var(--color-accent-700); white-space: nowrap; }
 @media (max-width: 600px) {
@@ -109,12 +98,13 @@ a:hover { color: var(--color-accent-200); }
 </head>
 <body>
 <nav class="site-nav">
-  <a href="index.html" class="nav-brand">元鑫實業</a>
+  <a href="https://www.yi-ding.com.tw/" class="nav-brand" style="color: var(--color-neutral-100); font-weight: normal;">義鼎不動產</a>
   <ul class="nav-links">
-    <li><a href="projects.html">熱門建案</a></li>
+    <li><a href="index.html">首頁</a></li>
+    <li><a href="projects.html">精選土地</a></li>
     <li><a href="articles.html" class="active">建築美學</a></li>
     <li><a href="index.html#brand">品牌介紹</a></li>
-    <li><a href="index.html#contact">聯絡我們</a></li>
+    <li><a href="https://yi-ding.com.tw/edm/eCard/0130.html">聯絡我們</a></li>
   </ul>
 </nav>
 <header class="page-header">
@@ -124,26 +114,19 @@ a:hover { color: var(--color-accent-200); }
     <p class="page-sub">探索全球建築設計趨勢與市場脈動，從空間美學到產業洞察，為您提供專業觀點。</p>
   </div>
 </header>
-<div class="tabs-bar">
-  <div class="wrap">
-    <div class="tabs-row">
-      <button class="tab-btn active" data-tab="all">全部</button>
-      <button class="tab-btn" data-tab="aesthetics">建築美學</button>
-      <button class="tab-btn" data-tab="market">市場趨勢</button>
-    </div>
-  </div>
-</div>
 <!-- FEATURED -->
 <section class="featured">
   <div class="wrap">
     <div class="featured-card" data-cat="aesthetics">
       <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-      <div class="featured-img">封面圖片</div>
+      <div class="featured-img"><img src="exhibit-fujimoto.jpg" alt="藤本壯介建築展：原初・未來・森 主視覺" /></div>
       <div class="featured-body">
         <span class="featured-tag">建築美學</span>
-        <h2 class="featured-title">隈研吾攜手丹麥工匠，以木構裝置詮釋「木漏日」美學</h2>
-        <p class="featured-excerpt">重新詮釋日式「木漏日」美學，隈研吾攜手丹麥工匠打造木構造裝置藝術，讓光影在建築間自然流動，回歸自然與人的對話。</p>
-        <a href="#" class="read-more">閱讀全文 →</a>
+        <p class="featured-date">2026.08.15 – 2027.01.03</p>
+        <h2 class="featured-title">藤本壯介建築展：原初．未來．森</h2>
+        <p class="featured-excerpt">忠泰美術館迎向開館十週年，延續長期關注的城市與未來議題推出系列展覽，首檔邀請日本建築師藤本壯介來臺舉辦個展，以「原初」與「森」為軸線，探討建築如何回到人與環境最初的關係。</p>
+        <p class="featured-source">展覽資訊：忠泰美術館（台北市大安區市民大道三段178號）</p>
+        <a href="https://jam.jutfoundation.org.tw/exhibition/5639" target="_blank" rel="noopener" class="read-more">展覽詳情 →</a>
       </div>
     </div>
   </div>
@@ -153,84 +136,97 @@ a:hover { color: var(--color-accent-200); }
   <div class="wrap">
     <span class="section-kicker">最新文章</span>
     <hr class="section-rule" />
+    <!-- AUTO:ARTICLES:START -->
     <div class="articles-list">
-      <a class="article-row" data-cat="aesthetics" href="#">
-        <span class="row-date">2026.08.15</span>
+      <a class="article-row" data-cat="aesthetics" href="https://www.mottimes.com/article/detail/4818" target="_blank" rel="noopener">
+        <span class="row-date">2026.08.19</span>
         <div class="row-content">
-          <h3>西北國家人壽保險大樓華麗轉型，搖身變百間客房質感旅店</h3>
-          <p>徹底顛覆大眾對古板辦公空間的無聊想像，美國明尼蘇達州的西北國家人壽保險大樓將轉型為精緻旅店。</p>
+          <h3>5個關鍵字讀懂隈研吾</h3>
+          <p>以「自然素材、弱化、疊加、縫隙、柔和」五個關鍵字，拆解隈研吾建築美學的核心語彙，從木橋美術館到石之美術館，看他如何用在地材料回應環境。</p>
+          <p class="row-source">原文出處：MOT TIMES 明日誌 →</p>
         </div>
         <span class="row-tag">建築美學</span>
       </a>
-      <a class="article-row" data-cat="aesthetics" href="#">
-        <span class="row-date">2026.08.10</span>
+      <a class="article-row" data-cat="aesthetics" href="https://tw.news.yahoo.com/2026%E5%8F%B0%E7%81%A3%E7%9F%A5%E5%90%8D%E5%AE%A4%E5%85%A7%E8%A8%AD%E8%A8%88%E5%B8%AB%E6%8E%A8%E8%96%A6-%E7%9B%A4%E9%BB%9E8%E4%BD%8D%E5%80%BC%E5%BE%97%E9%97%9C%E6%B3%A8%E7%9A%84%E9%A0%82%E5%B0%96%E7%A9%BA%E9%96%93%E7%BE%8E%E5%AD%B8%E5%A4%A7%E5%B8%AB-085543636.html" target="_blank" rel="noopener">
+        <span class="row-date">2026.07.07</span>
         <div class="row-content">
-          <h3>數千磚撐起漂浮屋頂，BAUEN 在亞松森打造銀行分行空間宣言</h3>
-          <p>數千塊磚共同撐起一片漂浮屋頂，讓銀行分行的建築形式成為一份關於信任與社群的空間宣言。</p>
+          <h3>2026台灣知名室內設計師推薦：8位空間美學大師</h3>
+          <p>邱德光的新裝飾主義、季裕棠的頂級酒店美學、李瑋珉的人文空間敘事⋯⋯盤點華人設計圈當代最具代表性的空間美學大師。</p>
+          <p class="row-source">原文出處：Yahoo新聞 →</p>
         </div>
         <span class="row-tag">建築美學</span>
       </a>
-      <a class="article-row" data-cat="market" href="#">
-        <span class="row-date">2026.08.05</span>
+      <a class="article-row" data-cat="aesthetics" href="https://www.luxurywatcher.com/zh-Hant/article/32104" target="_blank" rel="noopener">
+        <span class="row-date">2026.05.04</span>
         <div class="row-content">
-          <h3>桃園大有特區掌握「流量密碼」，冷清市況中一枝獨秀開紅盤</h3>
-          <p>央行打炒房政策後房市趨冷，然而桃園大有特區個案在首購優先的貸款條件下，來人估計突破三位數。</p>
+          <h3>盤點清水模大師安藤忠雄的十大名作</h3>
+          <p>從風之教堂到光之教會，一次看懂「清水混凝土詩人」如何用最樸實的材料，營造光影與信仰之間的對話。</p>
+          <p class="row-source">原文出處：LuxuryWatcher →</p>
         </div>
-        <span class="row-tag">市場趨勢</span>
+        <span class="row-tag">建築美學</span>
       </a>
-      <a class="article-row" data-cat="market" href="#">
-        <span class="row-date">2026.07.28</span>
+      <a class="article-row" data-cat="aesthetics" href="https://www.mottimes.com/article/detail/6469" target="_blank" rel="noopener">
+        <span class="row-date">2025.09.24</span>
         <div class="row-content">
-          <h3>新光三越大有店原址將改建，桃園小天母再度成為話題</h3>
-          <p>素有「桃園小天母」美譽的大有生活圈，因新光三越原址改建計劃引發話題，宜居首選再受關注。</p>
+          <h3>SANAA 台灣建築首作：台中綠美圖開箱</h3>
+          <p>妹島和世與西澤立衛親自導覽，8座純白量體串連圖書館與美術館，以「像逛公園一樣」的空間邏輯，重新定義文化設施與城市的關係。</p>
+          <p class="row-source">原文出處：MOT TIMES 明日誌 →</p>
         </div>
-        <span class="row-tag">市場趨勢</span>
+        <span class="row-tag">建築美學</span>
       </a>
-      <a class="article-row" data-cat="market" href="#">
-        <span class="row-date">2026.07.20</span>
+      <a class="article-row" data-cat="aesthetics" href="https://500times.udn.com/wtimes/story/120842/8718176" target="_blank" rel="noopener">
+        <span class="row-date">2025.05.07</span>
         <div class="row-content">
-          <h3>桃園宜居地王：新光三越原址重建掀話題，資金嗅覺忠實反映</h3>
-          <p>銀行、大型連鎖餐飲及百貨公司的佈局嗅覺往往更勝建商一籌，大有特區的引領效應可見一斑。</p>
+          <h3>中國醫藥大學美術館：Frank Gehry台灣新作</h3>
+          <p>普立茲克獎大師法蘭克．蓋瑞在東亞唯一作品，選址台中水湳，以折疊金屬與起伏不鏽鋼捕捉天光，如水彩暈染，預計2029年完工。</p>
+          <p class="row-source">原文出處：500輯／聯合報系 →</p>
         </div>
-        <span class="row-tag">市場趨勢</span>
+        <span class="row-tag">建築美學</span>
       </a>
-      <a class="article-row" data-cat="aesthetics" href="#">
-        <span class="row-date">2026.07.12</span>
+      <a class="article-row" data-cat="aesthetics" href="https://www.mottimes.com/article/detail/5924" target="_blank" rel="noopener">
+        <span class="row-date">2024.09.30</span>
         <div class="row-content">
-          <h3>混凝土與光的詩學：安藤忠雄最新住宅作品亮相瀨戶內海</h3>
-          <p>以清水模為主體，安藤忠雄在瀨戶內海畔打造一座與海天對話的極簡住宅，重新定義居住的本質。</p>
+          <h3>台中綠美圖識別設計搶先亮相，聶永真操刀</h3>
+          <p>建築理念如何延伸到品牌視覺？聶永真團隊耗時三年，用簡練直線隱喻「邊界中的無限」，呈現跨域流動的場館形象。</p>
+          <p class="row-source">原文出處：MOT TIMES 明日誌 →</p>
+        </div>
+        <span class="row-tag">建築美學</span>
+      </a>
+      <a class="article-row" data-cat="aesthetics" href="https://www.mottimes.com/article/detail/2297" target="_blank" rel="noopener">
+        <span class="row-date">2024（持續更新）</span>
+        <div class="row-content">
+          <h3>跟著宮澤洋手繪〈隈研吾建築圖鑑〉認識大師秘密</h3>
+          <p>日經建築前總編以「驚喜系、沉靜系、柔和系、靜謐系」四大分類，重新梳理隈研吾50座作品，提供不同於地理與功能分類的全新視角。</p>
+          <p class="row-source">原文出處：MOT TIMES 明日誌 →</p>
+        </div>
+        <span class="row-tag">建築美學</span>
+      </a>
+      <a class="article-row" data-cat="aesthetics" href="https://www.designwant.com/article/1937" target="_blank" rel="noopener">
+        <span class="row-date">持續更新</span>
+        <div class="row-content">
+          <h3>日本安藤忠雄建築之旅：5個必須朝聖的地標建築</h3>
+          <p>精選安藤忠雄五座代表作，含瀨戶內海旅館改建案，清水模立面搭配落地窗景，將自然山林景色引入居所，寂靜中見禪意。</p>
+          <p class="row-source">原文出處：設計王 DesignWant →</p>
         </div>
         <span class="row-tag">建築美學</span>
       </a>
     </div>
+    <!-- AUTO:ARTICLES:END -->
   </div>
 </section>
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-inner">
-      <span class="footer-brand">元鑫實業</span>
+      <span class="footer-brand">義鼎不動產 | 專業土地開發 . 不動產企劃行銷 |</span>
       <ul class="footer-links">
         <li><a href="index.html">首頁</a></li>
-        <li><a href="projects.html">熱門建案</a></li>
+        <li><a href="projects.html">精選土地</a></li>
         <li><a href="articles.html">建築美學</a></li>
         <li><a href="index.html#contact">聯絡我們</a></li>
       </ul>
-      <div class="footer-copy">© 2026 元鑫實業股份有限公司 Yuan Shin Development Corp. All rights reserved.</div>
+      <div class="footer-copy">© 2026 義鼎不動產有限公司</div>
     </div>
   </div>
 </footer>
-<script>
-// Tab filter
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const t = btn.dataset.tab;
-    document.querySelectorAll('[data-cat]').forEach(el => {
-      el.style.display = (t === 'all' || el.dataset.cat === t) ? '' : 'none';
-    });
-  });
-});
-</script>
 </body>
 </html>

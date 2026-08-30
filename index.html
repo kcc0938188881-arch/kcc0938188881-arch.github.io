@@ -19,7 +19,7 @@ html { scroll-behavior: smooth; }
 body { margin: 0; text-wrap: pretty; }
 a { color: var(--color-accent-300); }
 a:hover { color: var(--color-accent-200); }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--edge); }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--edge); }
 /* — NAV — */
 .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; gap: var(--space-6);
@@ -28,7 +28,11 @@ a:hover { color: var(--color-accent-200); }
   color: #fff; transition: background .3s; }
 .site-nav.scrolled { background: rgba(29,45,61,.97); backdrop-filter: blur(8px); }
 .nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: auto; }
+  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+.nav-person { font-family: var(--font-heading); font-size: 14px; line-height: 1; white-space: nowrap;
+  letter-spacing: 0.04em; color: rgba(255,255,255,.7); margin: 0 auto 0 var(--space-6); }
+.nav-links a { white-space: nowrap; }
+@media (max-width: 1180px) { .nav-person { display: none; } }
 .nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px;
   font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase;
@@ -42,7 +46,7 @@ a:hover { color: var(--color-accent-200); }
 
 /* — HERO — */
 .hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end;
-  padding: 0 var(--edge) calc(4 * var(--leading));
+  padding: 110px var(--edge) calc(4 * var(--leading));
   background: var(--dark); overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; }
 .hero-bg .bg-photo { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; opacity: .3; mix-blend-mode: luminosity; }
@@ -55,7 +59,6 @@ a:hover { color: var(--color-accent-200); }
     linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
   background-size: 60px 60px; }
 .hero-content { position: relative; z-index: 2; max-width: 900px; }
-.hero-kicker { display: block; font-size: 13px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--color-accent-400);
   font-family: var(--font-heading); margin-bottom: var(--half); }
 .hero h1 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
@@ -122,7 +125,6 @@ a:hover { color: var(--color-accent-200); }
   text-transform: uppercase; margin: 0 0 calc(1.5 * var(--leading)); }
 
 /* — PROJECTS CAROUSEL — */
-#projects .wrap { max-width: 1720px; }
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: clamp(20px, 2.4vw, 44px); }
 .project-card { position: relative; border: 1px solid var(--color-divider);
@@ -161,11 +163,44 @@ a:hover { color: var(--color-accent-200); }
 @media (max-width: 860px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 420px) { .projects-grid { grid-template-columns: 1fr; } }
+.category-grid { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .category-grid { grid-template-columns: 1fr; } }
+
+.news-layout { display: grid; grid-template-columns: 1fr; gap: calc(2 * var(--leading)); }
+.news-lead { position: relative; border: 1px solid rgba(255,255,255,.14); overflow: visible; display: block; text-decoration: none; transition: border-color .2s; }
+.news-lead:hover { border-color: var(--color-accent-400); }
+.news-lead > .corner { position: absolute; width: 11px; height: 11px; color: rgba(255,255,255,.25); pointer-events: none; }
+.news-lead > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.news-lead > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.news-lead > .corner.tl { top: -6px; left: -6px; }
+.news-lead > .corner.tr { top: -6px; right: -6px; }
+.news-lead > .corner.bl { bottom: -6px; left: -6px; }
+.news-lead > .corner.br { bottom: -6px; right: -6px; }
+.news-lead-img { position: relative; overflow: hidden; background: var(--color-accent-800); }
+.news-lead-img img { width: 100%; aspect-ratio: 21/8; object-fit: cover; display: block; }
+.news-lead-img::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--color-accent); mix-blend-mode: color; opacity: .4; }
+.news-lead-flag { position: absolute; top: 0; left: 0; z-index: 2; background: var(--color-accent); color: #fff; font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.08em; padding: 5px 14px; }
+.news-lead-body { padding: calc(1.5 * var(--leading)); }
+.news-lead-date { font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.04em; color: rgba(255,255,255,.5); margin: 0 0 var(--space-3); }
+.news-lead h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(24px, 2.6vw, 34px); line-height: 1.22; color: #fff; margin: 0 0 var(--leading); }
+.news-lead p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.58); margin: 0; max-width: 78ch; }
+.news-lead .news-take { margin-top: var(--leading); padding-top: var(--leading); border-top: 1px solid rgba(255,255,255,.1); color: var(--color-accent-300); font-size: 14px; }
+.news-lead .news-src { margin-top: var(--leading); font-size: 12px; color: var(--color-accent-400); }
+.news-lead-caption { font-size: 11px; color: rgba(255,255,255,.4); padding: var(--half) calc(1.5 * var(--leading)) 0; margin: 0; }
+.news-rank { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(24px, 3vw, 56px); }
+@media (max-width: 760px) { .news-rank { grid-template-columns: 1fr; } }
+.news-item { display: grid; grid-template-columns: 24px 1fr; gap: var(--space-3); align-items: start; padding: var(--space-4) 0; border-bottom: 1px solid rgba(255,255,255,.1); text-decoration: none; transition: background .2s; }
+.news-item:last-child { border-bottom: none; }
+.news-item:hover { background: rgba(255,255,255,.03); }
+.news-num { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: var(--color-accent); color: #fff; font-family: var(--font-heading); font-size: 13px; font-feature-settings: "tnum" 1; }
+.news-item h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 14px; line-height: 1.4; color: #fff; margin: 0; }
+.news-item .news-meta { font-size: 11px; color: rgba(255,255,255,.45); margin: 4px 0 0; font-feature-settings: "tnum" 1; }
 
 /* — ARTICLES — */
 .articles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 32px); }
 .article-card { border: 1px solid rgba(255,255,255,.1); padding: var(--leading);
-  position: relative; overflow: visible; transition: border-color .2s; cursor: pointer; }
+  position: relative; overflow: visible; transition: border-color .2s; cursor: pointer; display: block; text-decoration: none; }
 .article-card:hover { border-color: var(--color-accent-400); }
 .article-card > .corner { position: absolute; width: 11px; height: 11px;
   color: rgba(255,255,255,.2); pointer-events: none; }
@@ -228,6 +263,7 @@ a:hover { color: var(--color-accent-200); }
 .contact-form { display: flex; flex-direction: column; gap: var(--space-4); }
 .contact-form .input { background: var(--color-surface); }
 .contact-form .btn-primary { align-self: flex-start; }
+.form-note { font-size: 12px; color: color-mix(in srgb, var(--color-text) 55%, transparent); margin: 0; }
 @media (max-width: 768px) { .contact-split { grid-template-columns: 1fr; } }
 
 /* — FOOTER — */
@@ -250,12 +286,12 @@ a:hover { color: var(--color-accent-200); }
 
 <!-- NAV -->
 <nav class="site-nav" id="siteNav">
-  <span class="nav-brand"><a href="https://www.yi-ding.com.tw/" style="text-decoration-line: none; color: inherit;">義鼎不動產</a></span>
-  <span class="nav-brand"></span>
-  <div style="font-size: 14px; line-height: 1; font-family: 'Barlow Condensed', system-ui, sans-serif; position: absolute; left: 196px; top: 22px"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none; color: inherit;">郭 志 誠 0938 - 188 - 881</a></div>
-  <a href="#" style="font-size: 14px; font-family: 'Barlow Condensed', system-ui, sans-serif; color: #FFFFFF; text-decoration-line: none">首頁</a>
+  <span class="nav-brand"><a href="https://www.yi-ding.com.tw/" style="text-decoration-line: none; color: var(--color-neutral-100); font-weight: normal; font-size: 22px;">義鼎不動產</a></span>
+  <a class="nav-person" href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none; color: inherit; text-transform: none; font-size: 20px;">郭 志 誠 0938 - 188 - 881　LINE ID : KCCAA</a>
   <ul class="nav-links">
+    <li><a href="#">首頁</a></li>
     <li><a href="#projects">精選土地</a></li>
+    <li><a href="#news">不動產要聞</a></li>
     <li><a href="#articles">建築美學</a></li>
     <li><a href="https://www.yi-ding.com.tw/about.php?pid=2">品牌介紹</a></li>
   </ul>
@@ -273,8 +309,8 @@ a:hover { color: var(--color-accent-200); }
   <i class="corner-mark cm-tr"></i>
   <i class="corner-mark cm-br"></i>
   <div class="hero-content">
-    <h1><span class="line">Building</span> <span class="line"><span class="accent" style="position: relative;">Tomorrow</span></span></h1>
-    <span class="hero-kicker">FROM VISION TO LANDMARK</span>
+    <h1><span class="line" style="font-size: clamp(48px, 11vw, 156px); color: var(--color-neutral-100);">Building</span> <span class="line"><span class="accent" style="position: relative; font-size: clamp(40px, 8.5vw, 120px);">Tomorrow</span></span></h1>
+    <span class="hero-kicker" style="color: var(--color-neutral-100); font-size: clamp(16px, 2.4vw, 36px);">FROM VISION TO LANDMARK</span>
     <p class="hero-sub">用建築師的眼睛找地，用開發商的邏輯造局<br><br>深耕台南、高雄，專注建地、工業用地與土地整合開發。<br><br><br>以顧客為導向，憑藉專業經營團隊與創新行銷策略，為客戶提供優質銷售服務。</p>
     <div class="hero-cta">
       <button type="button" class="btn btn-ghost"><a href="https://www.youtube.com/@JasonKuo1881" style="text-decoration-line: none; color: inherit;">精選土地<br></a></button>
@@ -289,7 +325,7 @@ a:hover { color: var(--color-accent-200); }
     <span class="section-kicker">01 · 興地業</span>
     <hr class="section-rule" />
     <h2 class="section-title">精選土地</h2>
-    <div class="projects-grid">
+    <div class="projects-grid category-grid">
       <a class="project-card blueprint" href="projects.html?filter=presale">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
         <div class="project-img"><span class="project-badge">建地</span><img src="./land-annan-1.jpg" alt="建地" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
@@ -310,20 +346,20 @@ a:hover { color: var(--color-accent-200); }
       </a>
       <a class="project-card blueprint" href="projects.html?filter=upcoming">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <div class="project-img"><span class="project-badge">商辦</span><img src="./com-wwy-1.jpg" alt="商辦" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
+        <div class="project-img"><span class="project-badge">商辦</span><img src="./com-wuying-1.jpg" alt="商辦" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
         <div class="project-info">
-          <div class="project-tag">台南南科旁</div>
-          <h3 class="project-name">692坪 特專區用地</h3>
-          <p class="project-loc">緊鄰南科、善化及新市區市中心</p>
+          <div class="project-tag">高雄五甲</div>
+          <h3 class="project-name">五甲王義路商辦</h3>
+          <p class="project-loc">臨路商辦大樓 · 五甲商圈核心</p>
         </div>
       </a>
       <a class="project-card blueprint" href="projects.html?filter=commercial">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
         <div class="project-img"><span class="project-badge">廠房</span><img src="./fac-nanqu-1.jpg" alt="廠房" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
         <div class="project-info">
-          <div class="project-tag">台南高鐵特區 / 未來南科四期</div>
-          <h3 class="project-name">719坪 三面臨路建地</h3>
-          <p class="project-loc">近成大醫院沙崙分院、86快速道路</p>
+          <div class="project-tag">台南南區</div>
+          <h3 class="project-name">南區丁建廠房</h3>
+          <p class="project-loc">丁種建築用地 · 廠辦合一</p>
         </div>
       </a>
     </div>
@@ -331,38 +367,126 @@ a:hover { color: var(--color-accent-200); }
   </div>
 </section>
 
+<!-- NEWS -->
+<section class="section section-dark" id="news">
+  <div class="wrap">
+    <span class="section-kicker">02 · 南臺灣不動產要聞</span>
+    <hr class="section-rule" />
+    <h2 class="section-title">重要不動產新聞</h2>
+    <div class="news-layout">
+      <a class="news-lead" href="https://house.chinatimes.com/20260527001414-264415" target="_blank" rel="noopener">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div class="news-lead-img">
+          <span class="news-lead-flag">頭條</span>
+          <img src="land-shalun-1.jpg" alt="台南沙崙、南科四期一帶" />
+        </div>
+        <p class="news-lead-caption">圖為沙崙、南科四期一帶實景，義鼎不動產拍攝，非新聞來源提供。</p>
+        <div class="news-lead-body">
+          <p class="news-lead-date">2026.05.27 · 中時房產</p>
+          <h3>沙崙智慧綠能科學城串聯南科<br>估創 2.2 兆產值、3.5 萬就業機會</h3>
+          <p>沙崙智慧綠能科學城以綠能研發與智慧科技為核心，串聯南科園區形成產業廊帶。隨著中央研究院南部院區、成大醫院沙崙分院與高鐵台南站陸續到位，區域從單一科技園區轉為研發、醫療與商務並行的複合機能。</p>
+          <p class="news-take">觀察：就業人口與研發機構同步落地，會先反映在歸仁、仁德一帶的住宅與商辦需求上；三面臨路、具規模的完整腹地是這波最稀缺的標的。</p>
+          <p class="news-src">原文出處：中時房產 →</p>
+        </div>
+      </a>
+      <!-- AUTO:NEWS:START -->
+      <div class="news-rank">
+        <a class="news-item" href="https://udn.com/news/story/7240/9558557" target="_blank" rel="noopener">
+          <span class="news-num">1</span>
+          <div>
+            <h4>台積電再擴廠布局台南，南科 A 區塊 22 筆地上權完成簽約</h4>
+            <p class="news-meta">2026.06.10 · 聯合新聞網</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://www.housefeel.com.tw/article/%E5%8D%97%E7%A7%91-%E5%8D%97%E9%83%A8%E7%A7%91%E5%AD%B8%E5%9C%92%E5%8D%80-%E5%8D%97%E7%A7%91%E7%89%B9%E5%AE%9A%E5%8D%80-%E5%8F%B0%E7%A9%8D%E9%9B%BB/" target="_blank" rel="noopener">
+          <span class="news-num">2</span>
+          <div>
+            <h4>台積電南科三期 CoWoS 新廠取得 5 張建照，投資額 2,000 億元起跳</h4>
+            <p class="news-meta">2026.03 · HouseFeel 房感</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://vocus.cc/article/69958cfffd8978000145f44d" target="_blank" rel="noopener">
+          <span class="news-num">3</span>
+          <div>
+            <h4>南科沙崙園區（南科四期）進入二階環評，鎖定 1 奈米製程</h4>
+            <p class="news-meta">2026.05 · vocus 產業觀察</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://house.ettoday.net/news/3223459" target="_blank" rel="noopener">
+          <span class="news-num">4</span>
+          <div>
+            <h4>台南一次端出 52.8 億、29 筆土地標售，南科特定區千坪地最受矚目</h4>
+            <p class="news-meta">2026.08 · ETtoday 房產雲</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://house.ettoday.net/news/3101097" target="_blank" rel="noopener">
+          <span class="news-num">5</span>
+          <div>
+            <h4>台南市 2026 年首波土地標售 11 筆 10 標，總底價 25.5 億元</h4>
+            <p class="news-meta">2026.01.14 · ETtoday 房產雲</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://estate.ltn.com.tw/article/28309" target="_blank" rel="noopener">
+          <span class="news-num">6</span>
+          <div>
+            <h4>高雄白埔產業園區 7 月動工，第三季公告招商結果，攸關橋頭與岡山房市</h4>
+            <p class="news-meta">2026.07.01 · 自由時報地產天下</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://udn.com/news/story/7327/9414584" target="_blank" rel="noopener">
+          <span class="news-num">7</span>
+          <div>
+            <h4>陳其邁：白埔園區已順利招商半導體及 AI 國際大廠，估年產值 3,000 億元</h4>
+            <p class="news-meta">2026.03 · 聯合新聞網</p>
+          </div>
+        </a>
+        <a class="news-item" href="https://estate.ltn.com.tw/article/27589" target="_blank" rel="noopener">
+          <span class="news-num">8</span>
+          <div>
+            <h4>白埔產業園區公共設施年中動工，招商以半導體後段製程與 AI 為主</h4>
+            <p class="news-meta">2026.04.22 · 自由時報地產天下</p>
+          </div>
+        </a>
+      </div>
+      <!-- AUTO:NEWS:END -->
+    </div>
+  </div>
+</section>
+
 <!-- ARTICLES -->
 <section class="section section-dark" id="articles">
   <div class="wrap">
-    <span class="section-kicker">02 · 知天勢</span>
+    <span class="section-kicker">03 · 知天勢</span>
     <hr class="section-rule" />
     <h2 class="section-title">建築美學</h2>
+    <!-- AUTO:ARTICLES:START -->
     <div class="articles-grid">
-      <div class="article-card reveal">
+      <a class="article-card reveal" href="https://jam.jutfoundation.org.tw/exhibition/5639" target="_blank" rel="noopener">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
         <span class="article-tag">建築美學</span>
-        <h3 class="article-title">隈研吾攜手丹麥工匠，以木構裝置詮釋「木漏日」美學</h3>
-        <p class="article-excerpt">重新詮釋日式「木漏日」美學，隈研吾攜手丹麥工匠打造木構造裝置藝術，讓光影在建築間自然流動。</p>
-      </div>
-      <div class="article-card reveal">
-        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="article-tag">市場趨勢</span>
-        <h3 class="article-title">桃園大有特區掌握「流量密碼」，冷清市況中一枝獨秀</h3>
-        <p class="article-excerpt">央行打炒房政策後房市趨冷，然而桃園大有特區個案在首購優先的貸款條件下，來人突破三位數。</p>
-      </div>
-      <div class="article-card reveal">
+        <h3 class="article-title">藤本壯介建築展：原初・未來・森</h3>
+        <p class="article-excerpt">忠泰美術館開館十週年首檔展覽，邀請日本建築師藤本壯介來臺舉辦個展，以「原初」與「森」為軸線，探討建築如何回到人與環境最初的關係。</p>
+      </a>
+      <a class="article-card reveal" href="https://www.mottimes.com/article/detail/4818" target="_blank" rel="noopener">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
         <span class="article-tag">建築美學</span>
-        <h3 class="article-title">數千磚撐起漂浮屋頂，BAUEN 打造銀行分行空間宣言</h3>
-        <p class="article-excerpt">數千塊磚共同撐起一片漂浮屋頂，讓銀行分行的建築形式成為一份關於信任與社群的空間宣言。</p>
-      </div>
-      <div class="article-card reveal">
+        <h3 class="article-title">5個關鍵字讀懂隈研吾</h3>
+        <p class="article-excerpt">以「自然素材、弱化、疊加、縫隙、柔和」五個關鍵字，拆解隈研吾建築美學的核心語彙，從木橋美術館到石之美術館，看他如何用在地材料回應環境。</p>
+      </a>
+      <a class="article-card reveal" href="https://www.mottimes.com/article/detail/6469" target="_blank" rel="noopener">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <span class="article-tag">市場趨勢</span>
-        <h3 class="article-title">新光三越大有店原址將改建，桃園小天母再度成為話題</h3>
-        <p class="article-excerpt">素有「桃園小天母」美譽的大有生活圈，因新光三越原址改建計劃引發話題，宜居首選再受關注。</p>
-      </div>
+        <span class="article-tag">建築美學</span>
+        <h3 class="article-title">SANAA 台灣建築首作：台中綠美圖開箱</h3>
+        <p class="article-excerpt">妹島和世與西澤立衛親自導覽，8座純白量體串連圖書館與美術館，以「像逛公園一樣」的空間邏輯，重新定義文化設施與城市的關係。</p>
+      </a>
+      <a class="article-card reveal" href="https://www.luxurywatcher.com/zh-Hant/article/32104" target="_blank" rel="noopener">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <span class="article-tag">建築美學</span>
+        <h3 class="article-title">盤點清水模大師安藤忠雄的十大名作</h3>
+        <p class="article-excerpt">從風之教堂到光之教會，一次看懂「清水混凝土詩人」如何用最樸實的材料，營造光影與信仰之間的對話。</p>
+      </a>
     </div>
+    <!-- AUTO:ARTICLES:END -->
     <a href="articles.html" class="more-link">更多文章 →</a>
   </div>
 </section>
@@ -370,7 +494,7 @@ a:hover { color: var(--color-accent-200); }
 <!-- BRAND -->
 <section class="section section-dark" id="brand">
   <div class="wrap">
-    <span class="section-kicker">03 · 尊人意</span>
+    <span class="section-kicker">04 · 尊人意</span>
     <hr class="section-rule" />
     <div class="brand-grid">
       <div class="brand-text">
@@ -403,7 +527,7 @@ a:hover { color: var(--color-accent-200); }
 <!-- CONTACT -->
 <section class="section section-light" id="contact">
   <div class="wrap">
-    <span class="section-kicker">04 · 聯絡我們</span>
+    <span class="section-kicker">05 · 聯絡我們</span>
     <hr class="section-rule" />
     <div class="contact-split">
       <div class="contact-info">
@@ -425,12 +549,18 @@ a:hover { color: var(--color-accent-200); }
         </div>
         <p style="margin-top: var(--leading);">無論您是開發商、建設公司尋求專業土地服務，或是地主有不動產稅務、法規等疑問或想了解市場行情，歡迎與我們聯繫。</p>
       </div>
-      <form class="contact-form" onsubmit="return false">
-        <div class="field"><label>姓名</label><input class="input" type="text" placeholder="您的姓名" /></div>
-        <div class="field"><label>電話</label><input class="input" type="tel" placeholder="聯絡電話" /></div>
-        <div class="field"><label>信箱</label><input class="input" type="email" placeholder="電子信箱" /></div>
-        <div class="field"><label>需求說明</label><textarea class="input" placeholder="請簡述您的需求"></textarea></div>
+      <form class="contact-form" action="https://formsubmit.co/kcc.0938188881@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="義鼎不動產官網 — 客戶需求來信" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value="https://kcc0938188881-arch.github.io/thanks.html" />
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+        <div class="field"><label for="cf-name">姓名</label><input id="cf-name" class="input" type="text" name="姓名" placeholder="您的姓名" required /></div>
+        <div class="field"><label for="cf-tel">電話</label><input id="cf-tel" class="input" type="tel" name="電話" placeholder="聯絡電話" required /></div>
+        <div class="field"><label for="cf-mail">信箱</label><input id="cf-mail" class="input" type="email" name="信箱" placeholder="電子信箱" /></div>
+        <div class="field"><label for="cf-msg">需求說明</label><textarea id="cf-msg" class="input" name="需求說明" placeholder="請簡述您的需求" required></textarea></div>
         <button type="submit" class="btn btn-primary">送出表單</button>
+        <p class="form-note">送出後將直接寄至郭志誠信箱，我們會盡快與您聯繫。</p>
       </form>
     </div>
   </div>
@@ -443,7 +573,8 @@ a:hover { color: var(--color-accent-200); }
       <span class="footer-brand">義鼎不動產 | 專業土地開發 . 不動產企劃行銷 |</span>
       <ul class="footer-links">
         <li><a href="#projects">精選土地</a></li>
-        <li><a href="#articles">建築美學</a></li>
+        <li><a href="#news">不動產要聞</a></li>
+    <li><a href="#articles">建築美學</a></li>
         <li><a href="#brand">品牌介紹</a></li>
         <li><a href="#contact">聯絡我們</a></li>
       </ul>

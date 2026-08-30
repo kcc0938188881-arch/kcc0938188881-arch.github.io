@@ -1,0 +1,56 @@
+name: 定期更新網站內容
+
+on:
+  schedule:
+    # 每月 1 號與 15 號 台灣時間 09:00（UTC 01:00）
+    - cron: '0 1 1,15 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# 同時只允許一個實例執行，避免推送衝突
+concurrency:
+  group: content-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 更新不動產要聞（雙週）
+        run: node scripts/update-news.mjs
+        continue-on-error: true
+
+      - name: 更新建築美學文章（每月 1 號，手動執行時一併更新）
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ] || [ "$(date -u +%d)" = "01" ]; then
+            node scripts/update-articles.mjs
+          else
+            echo "非每月 1 號，略過文章更新。"
+          fi
+        continue-on-error: true
+
+      - name: 提交變更
+        run: |
+          if [ -z "$(git status --porcelain index.html articles.html)" ]; then
+            echo "內容無變化，不提交。"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html articles.html
+          git commit -m "自動更新網站內容 $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && exit 0
+            echo "推送失敗，第 $i 次重試…"
+            sleep 5
+          done
+          echo "推送連續失敗三次。"
+          exit 1
