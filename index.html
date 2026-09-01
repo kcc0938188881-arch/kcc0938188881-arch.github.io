@@ -27,12 +27,13 @@ a:hover { color: var(--color-accent-200); }
   background: linear-gradient(to bottom, rgba(29,45,61,.92), rgba(29,45,61,0));
   color: #fff; transition: background .3s; }
 .site-nav.scrolled { background: rgba(29,45,61,.97); backdrop-filter: blur(8px); }
-.nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
-.nav-person { font-family: var(--font-heading); font-size: 14px; line-height: 1; white-space: nowrap;
-  letter-spacing: 0.04em; color: rgba(255,255,255,.7); margin: 0 auto 0 var(--space-6); }
 .nav-links a { white-space: nowrap; }
-@media (max-width: 1180px) { .nav-person { display: none; } }
+.nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-right: auto; }
+.nav-sep { color: rgba(255,255,255,.35); font-weight: 300; }
+.nav-name { font-family: var(--font-heading); font-size: inherit; letter-spacing: inherit; text-transform: none; }
+.nav-name:hover { color: #fff; }
+@media (max-width: 1180px) { .nav-name, .nav-sep { display: none; } }
 .nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px;
   font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase;
@@ -58,7 +59,39 @@ a:hover { color: var(--color-accent-200); }
     linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
   background-size: 60px 60px; }
-.hero-content { position: relative; z-index: 2; max-width: 900px; }
+.hero-inner { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,0.92fr); gap: clamp(32px, 4vw, 72px); align-items: stretch; min-height: calc(100vh - 110px - 4 * var(--leading)); }
+.hero-content { max-width: 900px; align-self: end; }
+.hero-pick { position: relative; display: flex; flex-direction: column; align-self: stretch; text-decoration: none; border: 1px solid rgba(255,255,255,.22); background: rgba(29,45,61,.72); backdrop-filter: blur(6px); transition: border-color .2s; }
+.hero-pick:hover { border-color: var(--color-accent-300); }
+.hero-pick > .corner { position: absolute; width: 13px; height: 13px; color: rgba(255,255,255,.4); pointer-events: none; }
+.hero-pick > .corner::before { content: ""; position: absolute; left: 6px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.hero-pick > .corner::after { content: ""; position: absolute; top: 6px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.hero-pick > .corner.tl { top: -7px; left: -7px; }
+.hero-pick > .corner.tr { top: -7px; right: -7px; }
+.hero-pick > .corner.bl { bottom: -7px; left: -7px; }
+.hero-pick > .corner.br { bottom: -7px; right: -7px; }
+.hero-pick-flag { position: absolute; top: 0; left: 0; z-index: 3; background: var(--color-accent); color: #fff; font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.1em; padding: 8px 20px; }
+.hero-pick-img { position: relative; overflow: hidden; flex: 1; min-height: 0; background: var(--color-accent-900); }
+.hero-pick-img::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--color-accent); mix-blend-mode: color; opacity: .45; }
+.pick-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; opacity: 0; transform: translateX(var(--from, 6%)) scale(1.04); will-change: transform, opacity; backface-visibility: hidden; transition: opacity .62s cubic-bezier(.32,.72,0,1), transform .78s cubic-bezier(.32,.72,0,1); }
+.pick-layer.is-on { opacity: 1; transform: translateX(0) scale(1); z-index: 2; }
+.pick-layer.is-out { opacity: 0; transform: translateX(var(--to, -6%)) scale(1.04); z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .pick-layer { transition: opacity .2s ease; transform: none !important; } }
+.pick-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 4; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: rgba(29,45,61,.6); border: 1px solid rgba(255,255,255,.28); color: #fff; font-size: 28px; line-height: 1; font-family: var(--font-heading); cursor: pointer; transition: background .2s, border-color .2s; }
+.pick-nav:hover { background: var(--color-accent); border-color: var(--color-accent); }
+.pick-nav.prev { left: var(--half); }
+.pick-nav.next { right: var(--half); }
+.pick-count { position: absolute; bottom: var(--half); right: var(--half); z-index: 4; font-family: var(--font-heading); font-size: 13px; letter-spacing: 0.06em; color: rgba(255,255,255,.85); background: rgba(29,45,61,.6); padding: 4px 12px; font-feature-settings: "tnum" 1; }
+.hero-pick-body { display: block; text-decoration: none; }
+.hero-pick-body { padding: calc(1.4 * var(--leading)) calc(1.4 * var(--leading)) var(--leading); }
+.hero-pick-links { display: flex; gap: var(--space-6); padding: 0 calc(1.4 * var(--leading)) calc(1.4 * var(--leading)); border-top: 1px solid rgba(255,255,255,.12); margin: 0 calc(1.4 * var(--leading)); padding-left: 0; padding-right: 0; padding-top: var(--leading); }
+.hero-pick-links a { font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.06em; color: var(--color-accent-300); text-decoration: none; transition: color .2s; }
+.hero-pick-links a:hover { color: #fff; }
+.hero-pick-tag { font-size: 13px; letter-spacing: 0.08em; color: var(--color-accent-300); }
+.hero-pick h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(30px, 3vw, 42px); line-height: 1.2; letter-spacing: 0.02em; color: #fff; margin: var(--space-3) 0 var(--space-3); }
+.hero-pick p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.6); margin: 0; }
+.hero-pick-more { display: block; margin-top: var(--leading); font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.06em; color: var(--color-accent-300); }
+@media (max-width: 1240px) { .hero-inner { grid-template-columns: 1fr; min-height: 0; } .hero-pick { max-width: 560px; } .hero-pick-img { flex: 0 0 auto; aspect-ratio: 4/3; } }
   text-transform: uppercase; color: var(--color-accent-400);
   font-family: var(--font-heading); margin-bottom: var(--half); }
 .hero h1 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
@@ -286,15 +319,15 @@ a:hover { color: var(--color-accent-200); }
 
 <!-- NAV -->
 <nav class="site-nav" id="siteNav">
-  <span class="nav-brand"><a href="https://www.yi-ding.com.tw/" style="text-decoration-line: none; color: var(--color-neutral-100); font-weight: normal; font-size: 22px;">義鼎不動產</a></span>
-  <a class="nav-person" href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none; color: inherit; text-transform: none; font-size: 20px;">郭 志 誠 0938 - 188 - 881　LINE ID : KCCAA</a>
+  <span class="nav-brand" style="font-size: 22px;"><a href="https://www.yi-ding.com.tw/" style="text-decoration-line: none; color: var(--color-neutral-100); font-weight: normal; font-size: 22px;">義鼎不動產</a><span class="nav-sep" style="color: var(--color-neutral-100);"> | </span><a href="https://yi-ding.com.tw/edm/eCard/0130.html" class="nav-name" style="text-decoration-line: none; font-weight: normal; color: var(--color-neutral-100);">郭志誠 0938-188-881</a></span>
   <ul class="nav-links">
     <li><a href="#">首頁</a></li>
     <li><a href="#projects">精選土地</a></li>
-    <li><a href="#news">不動產要聞</a></li>
+    <li><a href="#news">市場動態</a></li>
     <li><a href="#articles">建築美學</a></li>
+    <li><a href="columns.html">名家專欄</a></li>
     <li><a href="https://www.yi-ding.com.tw/about.php?pid=2">品牌介紹</a></li>
-  </ul>
+      </ul>
   <button type="button" class="nav-contact"><a href="https://yi-ding.com.tw/edm/eCard/0130.html" style="text-decoration-line: none;">聯絡我們</a></button>
 </nav>
 
@@ -308,6 +341,7 @@ a:hover { color: var(--color-accent-200); }
   <i class="corner-mark cm-tl"></i>
   <i class="corner-mark cm-tr"></i>
   <i class="corner-mark cm-br"></i>
+  <div class="hero-inner">
   <div class="hero-content">
     <h1><span class="line" style="font-size: clamp(48px, 11vw, 156px); color: var(--color-neutral-100);">Building</span> <span class="line"><span class="accent" style="position: relative; font-size: clamp(40px, 8.5vw, 120px);">Tomorrow</span></span></h1>
     <span class="hero-kicker" style="color: var(--color-neutral-100); font-size: clamp(16px, 2.4vw, 36px);">FROM VISION TO LANDMARK</span>
@@ -316,6 +350,28 @@ a:hover { color: var(--color-accent-200); }
       <button type="button" class="btn btn-ghost"><a href="https://www.youtube.com/@JasonKuo1881" style="text-decoration-line: none; color: inherit;">精選土地<br></a></button>
       <button type="button" class="btn btn-ghost"><a href="https://www.yi-ding.com.tw/about.php?pid=2" style="text-decoration-line: none; color: inherit;">品牌介紹 →</a></button>
     </div>
+  </div>
+  <div class="hero-pick">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <span class="hero-pick-flag">強力推薦</span>
+    <div class="hero-pick-img">
+      <img class="pick-layer is-on" id="pickA" src="land-shalun-1.jpg" alt="台南沙崙南科四期 3305坪建地" />
+      <img class="pick-layer" id="pickB" alt="" aria-hidden="true" />
+      <button type="button" class="pick-nav prev" id="pickPrev" aria-label="上一張">‹</button>
+      <button type="button" class="pick-nav next" id="pickNext" aria-label="下一張">›</button>
+      <span class="pick-count" id="pickCount">1 / 12</span>
+    </div>
+    <a class="hero-pick-body" href="detail.html?id=8">
+      <span class="hero-pick-tag">建地 · 台南歸仁沙崙</span>
+      <h3>3305 坪<br>三面臨路建地</h3>
+      <p>未來南科四期範圍周邊，緊鄰沙崙智慧綠能科學城與高鐵台南站，三千坪級完整腹地。</p>
+      <span class="hero-pick-more">看物件詳情 →</span>
+    </a>
+    <div class="hero-pick-links">
+      <a href="https://www.youtube.com/watch?v=3Jlmyp1KfiQ" target="_blank" rel="noopener">空拍影片 ▸</a>
+      <a href="https://www.youtube.com/@JasonKuo1881" target="_blank" rel="noopener">更多影片 ▸</a>
+    </div>
+  </div>
   </div>
 </section>
 
@@ -328,7 +384,7 @@ a:hover { color: var(--color-accent-200); }
     <div class="projects-grid category-grid">
       <a class="project-card blueprint" href="projects.html?filter=presale">
         <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-        <div class="project-img"><span class="project-badge">建地</span><img src="./land-annan-1.jpg" alt="建地" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
+        <div class="project-img"><span class="project-badge">建地</span><img src="./land-shalun-1.jpg" alt="建地" style="max-width: 100%; height: auto; display: block; object-fit: cover; width: 100%; aspect-ratio: 4/3;"></div>
         <div class="project-info">
           <div class="project-tag">台南高鐵特區</div>
           <h3 class="project-name">3305坪 三面臨路建地</h3>
@@ -370,7 +426,7 @@ a:hover { color: var(--color-accent-200); }
 <!-- NEWS -->
 <section class="section section-dark" id="news">
   <div class="wrap">
-    <span class="section-kicker">02 · 南臺灣不動產要聞</span>
+    <span class="section-kicker">02 · 南臺灣不動產新聞</span>
     <hr class="section-rule" />
     <h2 class="section-title">重要不動產新聞</h2>
     <div class="news-layout">
@@ -572,10 +628,12 @@ a:hover { color: var(--color-accent-200); }
     <div class="footer-inner">
       <span class="footer-brand">義鼎不動產 | 專業土地開發 . 不動產企劃行銷 |</span>
       <ul class="footer-links">
+        <li><a href="#">首頁</a></li>
         <li><a href="#projects">精選土地</a></li>
-        <li><a href="#news">不動產要聞</a></li>
-    <li><a href="#articles">建築美學</a></li>
-        <li><a href="#brand">品牌介紹</a></li>
+        <li><a href="#news">市場動態</a></li>
+        <li><a href="#articles">建築美學</a></li>
+        <li><a href="columns.html">名家專欄</a></li>
+        <li><a href="https://www.yi-ding.com.tw/about.php?pid=2">品牌介紹</a></li>
         <li><a href="#contact">聯絡我們</a></li>
       </ul>
       <div class="footer-copy">© 2026 義鼎不動產有限公司</div>
@@ -584,6 +642,59 @@ a:hover { color: var(--color-accent-200); }
 </footer>
 
 <script>
+// Hero 推薦土地照片輪播
+(function(){
+  const imgs = Array.from({length:12},(_,i)=>'land-shalun-'+(i+1)+'.jpg');
+  const wrap = document.querySelector('.hero-pick-img');
+  const a = document.getElementById('pickA'), b = document.getElementById('pickB'), cnt = document.getElementById('pickCount');
+  const card = document.querySelector('.hero-pick');
+  if (!wrap || !a || !b) return;
+  const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cache = imgs.map(src => { const p = new Image(); p.src = src; return p; });
+  let i = 0, busy = false, timer = null;
+
+  function animate(nxt, cur, dir, idx) {
+    nxt.style.setProperty('--from', (dir * 7) + '%');
+    cur.style.setProperty('--to', (-dir * 7) + '%');
+    nxt.classList.remove('is-out');
+    void nxt.offsetWidth;
+    nxt.classList.add('is-on');
+    cur.classList.remove('is-on');
+    cur.classList.add('is-out');
+    cnt.textContent = (idx + 1) + ' / ' + imgs.length;
+  }
+
+  function go(step) {
+    if (busy) return;
+    busy = true;
+    let done = false;
+    const unlock = () => { if (done) return; done = true; busy = false; };
+    setTimeout(unlock, 900);
+
+    const cur = wrap.querySelector('.pick-layer.is-on') || a;
+    const nxt = (cur === a) ? b : a;
+    i = (i + step + imgs.length) % imgs.length;
+    const idx = i, dir = step > 0 ? 1 : -1, src = imgs[idx];
+    const run = () => {
+      animate(nxt, cur, dir, idx);
+      nxt.addEventListener('transitionend', ev => { if (ev.propertyName === 'transform') unlock(); }, { once: true });
+    };
+    nxt.src = src;
+    if (cache[idx].complete) run();
+    else if (nxt.decode) nxt.decode().then(run).catch(run);
+    else run();
+  }
+
+  const start = () => { stop(); if (!reduce()) timer = setInterval(() => go(1), 4200); };
+  const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+  const manual = step => { stop(); go(step); start(); };
+  document.getElementById('pickPrev').addEventListener('click', () => manual(-1));
+  document.getElementById('pickNext').addEventListener('click', () => manual(1));
+  card.addEventListener('mouseenter', stop);
+  card.addEventListener('mouseleave', start);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+  if (document.visibilityState === 'visible') start();
+})();
 // Sticky nav background
 const nav = document.getElementById('siteNav');
 window.addEventListener('scroll', () => {

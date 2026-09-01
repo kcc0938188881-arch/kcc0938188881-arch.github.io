@@ -18,8 +18,11 @@ a:hover { color: var(--color-accent-200); }
   padding: var(--space-4) clamp(20px, 5vw, 72px);
   background: rgba(29,45,61,.97); backdrop-filter: blur(8px); color: #fff; }
 .nav-brand { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-right: auto;
-  text-decoration: none; color: #fff;  white-space: nowrap; }
+  font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-right: auto; }
+.nav-sep { color: rgba(255,255,255,.35); font-weight: 300; }
+.nav-name { font-family: var(--font-heading); font-size: inherit; letter-spacing: inherit; text-transform: none; }
+.nav-name:hover { color: #fff; }
+@media (max-width: 1180px) { .nav-name, .nav-sep { display: none; } }
 .nav-links { display: flex; gap: var(--space-6); list-style: none; margin: 0; padding: 0; }
 .nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 14px;
   font-family: var(--font-heading); letter-spacing: 0.04em; text-transform: uppercase; transition: color .2s;  white-space: nowrap; }
@@ -98,14 +101,16 @@ a:hover { color: var(--color-accent-200); }
 </head>
 <body>
 <nav class="site-nav">
-  <a href="https://www.yi-ding.com.tw/" class="nav-brand" style="color: var(--color-neutral-100); font-weight: normal;">義鼎不動產</a>
+  <span class="nav-brand" style="font-size: 22px;"><a href="https://www.yi-ding.com.tw/" style="text-decoration-line: none; color: var(--color-neutral-100); font-weight: normal; font-size: 22px;">義鼎不動產</a><span class="nav-sep" style="color: var(--color-neutral-100);"> | </span><a href="https://yi-ding.com.tw/edm/eCard/0130.html" class="nav-name" style="text-decoration-line: none; font-weight: normal; color: var(--color-neutral-100);">郭志誠 0938-188-881</a></span>
   <ul class="nav-links">
     <li><a href="index.html">首頁</a></li>
     <li><a href="projects.html">精選土地</a></li>
-    <li><a href="articles.html" class="active">建築美學</a></li>
+    <li><a href="index.html#news">市場動態</a></li>
+    <li><a href="articles.html">建築美學</a></li>
+    <li><a href="columns.html">名家專欄</a></li>
     <li><a href="index.html#brand">品牌介紹</a></li>
     <li><a href="https://yi-ding.com.tw/edm/eCard/0130.html">聯絡我們</a></li>
-  </ul>
+      </ul>
 </nav>
 <header class="page-header">
   <div class="wrap">
@@ -221,8 +226,11 @@ a:hover { color: var(--color-accent-200); }
       <ul class="footer-links">
         <li><a href="index.html">首頁</a></li>
         <li><a href="projects.html">精選土地</a></li>
+        <li><a href="index.html#news">市場動態</a></li>
         <li><a href="articles.html">建築美學</a></li>
-        <li><a href="index.html#contact">聯絡我們</a></li>
+        <li><a href="columns.html">名家專欄</a></li>
+        <li><a href="index.html#brand">品牌介紹</a></li>
+        <li><a href="https://yi-ding.com.tw/edm/eCard/0130.html">聯絡我們</a></li>
       </ul>
       <div class="footer-copy">© 2026 義鼎不動產有限公司</div>
     </div>
