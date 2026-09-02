@@ -50,7 +50,10 @@ a:hover { color: var(--color-accent-200); }
   padding: 110px var(--edge) calc(4 * var(--leading));
   background: var(--dark); overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; }
-.hero-bg .bg-photo { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; opacity: .3; mix-blend-mode: luminosity; }
+.hero-bg .bg-video { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hero-bg .bg-video iframe { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: auto; height: auto; min-width: 100%; min-height: 100%; aspect-ratio: 16 / 9; border: 0; opacity: .38; mix-blend-mode: luminosity; }
+.hero-bg .bg-photo { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; opacity: .22; mix-blend-mode: luminosity; }
+.hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, rgba(29,45,61,.86) 0%, rgba(29,45,61,.62) 55%, rgba(29,45,61,.44) 100%); pointer-events: none; z-index: 1; }
 .hero-bg .diagonal { position: absolute; right: 0; top: 0; width: 55%; height: 100%;
   background: var(--color-accent-700); clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
   opacity: .25; }
@@ -61,6 +64,18 @@ a:hover { color: var(--color-accent-200); }
   background-size: 60px 60px; }
 .hero-inner { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,0.92fr); gap: clamp(32px, 4vw, 72px); align-items: stretch; min-height: calc(100vh - 110px - 4 * var(--leading)); }
 .hero-content { max-width: 900px; align-self: end; }
+.hero-aside { display: flex; flex-direction: column; gap: clamp(20px, 2vw, 32px); align-self: stretch; min-width: 0; }
+.hero-video { position: relative; border: 1px solid rgba(255,255,255,.22); background: rgba(29,45,61,.72); backdrop-filter: blur(6px); }
+.hero-video > .corner { position: absolute; width: 13px; height: 13px; color: rgba(255,255,255,.4); pointer-events: none; }
+.hero-video > .corner::before { content: ""; position: absolute; left: 6px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.hero-video > .corner::after { content: ""; position: absolute; top: 6px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.hero-video > .corner.tl { top: -7px; left: -7px; }
+.hero-video > .corner.tr { top: -7px; right: -7px; }
+.hero-video > .corner.bl { bottom: -7px; left: -7px; }
+.hero-video > .corner.br { bottom: -7px; right: -7px; }
+.hero-video-flag { position: absolute; top: 0; left: 0; z-index: 3; background: var(--color-accent); color: #fff; font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.1em; padding: 8px 20px; }
+.hero-video-embed { position: relative; aspect-ratio: 16 / 9; background: var(--color-accent-900); }
+.hero-video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 .hero-pick { position: relative; display: flex; flex-direction: column; align-self: stretch; text-decoration: none; border: 1px solid rgba(255,255,255,.22); background: rgba(29,45,61,.72); backdrop-filter: blur(6px); transition: border-color .2s; }
 .hero-pick:hover { border-color: var(--color-accent-300); }
 .hero-pick > .corner { position: absolute; width: 13px; height: 13px; color: rgba(255,255,255,.4); pointer-events: none; }
@@ -91,7 +106,7 @@ a:hover { color: var(--color-accent-200); }
 .hero-pick h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(30px, 3vw, 42px); line-height: 1.2; letter-spacing: 0.02em; color: #fff; margin: var(--space-3) 0 var(--space-3); }
 .hero-pick p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.6); margin: 0; }
 .hero-pick-more { display: block; margin-top: var(--leading); font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.06em; color: var(--color-accent-300); }
-@media (max-width: 1240px) { .hero-inner { grid-template-columns: 1fr; min-height: 0; } .hero-pick { max-width: 560px; } .hero-pick-img { flex: 0 0 auto; aspect-ratio: 4/3; } }
+@media (max-width: 1000px) { .hero-inner { grid-template-columns: 1fr; min-height: 0; } .hero-aside { max-width: 560px; } .hero-pick { max-width: 560px; } .hero-pick-img { flex: 0 0 auto; aspect-ratio: 4/3; } }
   text-transform: uppercase; color: var(--color-accent-400);
   font-family: var(--font-heading); margin-bottom: var(--half); }
 .hero h1 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
@@ -102,6 +117,7 @@ a:hover { color: var(--color-accent-200); }
 .hero-sub { font-size: 16px; line-height: var(--leading); color: rgba(255,255,255,.6);
   max-width: 48ch; margin: calc(1.5 * var(--leading)) 0 0; }
 .hero-cta { display: flex; gap: var(--space-4); margin-top: var(--leading); flex-wrap: wrap; }
+.hero-cta .btn { white-space: nowrap; }
 .hero-cta .btn-primary { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
 .hero-cta .btn-primary:hover { background: var(--color-accent-600); }
 .hero-cta .btn-ghost { color: rgba(255,255,255,.8); border-color: transparent; }
@@ -230,6 +246,22 @@ a:hover { color: var(--color-accent-200); }
 .news-item h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 14px; line-height: 1.4; color: #fff; margin: 0; }
 .news-item .news-meta { font-size: 11px; color: rgba(255,255,255,.45); margin: 4px 0 0; font-feature-settings: "tnum" 1; }
 
+/* — VIDEO — */
+.video-frame { position: relative; border: 1px solid rgba(255,255,255,.14); overflow: visible; }
+.video-frame > .corner { position: absolute; width: 11px; height: 11px; color: rgba(255,255,255,.25); pointer-events: none; }
+.video-frame > .corner::before { content: ""; position: absolute; left: 5px; top: 0; width: 1px; height: 100%; background: currentColor; }
+.video-frame > .corner::after { content: ""; position: absolute; top: 5px; left: 0; width: 100%; height: 1px; background: currentColor; }
+.video-frame > .corner.tl { top: -6px; left: -6px; }
+.video-frame > .corner.tr { top: -6px; right: -6px; }
+.video-frame > .corner.bl { bottom: -6px; left: -6px; }
+.video-frame > .corner.br { bottom: -6px; right: -6px; }
+.video-embed { position: relative; aspect-ratio: 16 / 9; background: var(--color-accent-900); }
+.video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+.video-meta { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: baseline; margin: calc(1.2 * var(--leading)) 0 0; }
+.video-meta p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.58); margin: 0; max-width: 68ch; flex: 1 1 480px; }
+.video-meta a { font-family: var(--font-heading); font-size: 15px; letter-spacing: 0.06em; color: var(--color-accent-300); text-decoration: none; white-space: nowrap; transition: color .2s; }
+.video-meta a:hover { color: #fff; }
+
 /* — ARTICLES — */
 .articles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 32px); }
 .article-card { border: 1px solid rgba(255,255,255,.1); padding: var(--leading);
@@ -324,6 +356,7 @@ a:hover { color: var(--color-accent-200); }
     <li><a href="#">首頁</a></li>
     <li><a href="#projects">精選土地</a></li>
     <li><a href="#news">市場動態</a></li>
+    <li><a href="#video">土地影音</a></li>
     <li><a href="#articles">建築美學</a></li>
     <li><a href="columns.html">名家專欄</a></li>
     <li><a href="https://www.yi-ding.com.tw/about.php?pid=2">品牌介紹</a></li>
@@ -334,6 +367,7 @@ a:hover { color: var(--color-accent-200); }
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
+    <div class="bg-video"><iframe id="heroVid" src="https://www.youtube.com/embed/L7G1H9YEh9w?autoplay=1&mute=1&loop=1&playlist=L7G1H9YEh9w&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&iv_load_policy=3&enablejsapi=1&origin=https://kcc0938188881-arch.github.io" title="義鼎不動產 土地空拍" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
     <div class="bg-photo"></div>
     <div class="diagonal"></div>
     <div class="hero-grid" style="left: -3px; top: -3px; position: absolute"></div>
@@ -349,6 +383,14 @@ a:hover { color: var(--color-accent-200); }
     <div class="hero-cta">
       <button type="button" class="btn btn-ghost"><a href="https://www.youtube.com/@JasonKuo1881" style="text-decoration-line: none; color: inherit;">精選土地<br></a></button>
       <button type="button" class="btn btn-ghost"><a href="https://www.yi-ding.com.tw/about.php?pid=2" style="text-decoration-line: none; color: inherit;">品牌介紹 →</a></button>
+    </div>
+  </div>
+  <div class="hero-aside">
+  <div class="hero-video">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <span class="hero-video-flag">空拍實景</span>
+    <div class="hero-video-embed">
+      <iframe src="https://www.youtube.com/embed/L7G1H9YEh9w?autoplay=1&mute=1&loop=1&playlist=L7G1H9YEh9w&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=https://kcc0938188881-arch.github.io" title="義鼎不動產 土地空拍實景" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
   <div class="hero-pick">
@@ -371,6 +413,7 @@ a:hover { color: var(--color-accent-200); }
       <a href="https://www.youtube.com/watch?v=3Jlmyp1KfiQ" target="_blank" rel="noopener">空拍影片 ▸</a>
       <a href="https://www.youtube.com/@JasonKuo1881" target="_blank" rel="noopener">更多影片 ▸</a>
     </div>
+  </div>
   </div>
   </div>
 </section>
@@ -509,10 +552,29 @@ a:hover { color: var(--color-accent-200); }
   </div>
 </section>
 
+<!-- VIDEO -->
+<section class="section section-dark" id="video">
+  <div class="wrap">
+    <span class="section-kicker">03 · 空拍實景</span>
+    <hr class="section-rule" />
+    <h2 class="section-title">土地影音</h2>
+    <div class="video-frame">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div class="video-embed">
+        <iframe loading="lazy" src="https://www.youtube.com/embed/L7G1H9YEh9w?autoplay=1&mute=1&loop=1&playlist=L7G1H9YEh9w&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=https://kcc0938188881-arch.github.io" title="義鼎不動產 土地空拍實景" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="video-meta">
+      <p>以空拍視角完整呈現基地規模、臨路條件與周邊環境。平面圖看不出的地勢起伏與鄰地使用現況，影片可以一次看清楚。</p>
+      <a href="https://www.youtube.com/@JasonKuo1881" target="_blank" rel="noopener">更多土地影片 ▸</a>
+    </div>
+  </div>
+</section>
+
 <!-- ARTICLES -->
 <section class="section section-dark" id="articles">
   <div class="wrap">
-    <span class="section-kicker">03 · 知天勢</span>
+    <span class="section-kicker">04 · 知天勢</span>
     <hr class="section-rule" />
     <h2 class="section-title">建築美學</h2>
     <!-- AUTO:ARTICLES:START -->
@@ -550,7 +612,7 @@ a:hover { color: var(--color-accent-200); }
 <!-- BRAND -->
 <section class="section section-dark" id="brand">
   <div class="wrap">
-    <span class="section-kicker">04 · 尊人意</span>
+    <span class="section-kicker">05 · 尊人意</span>
     <hr class="section-rule" />
     <div class="brand-grid">
       <div class="brand-text">
@@ -583,7 +645,7 @@ a:hover { color: var(--color-accent-200); }
 <!-- CONTACT -->
 <section class="section section-light" id="contact">
   <div class="wrap">
-    <span class="section-kicker">05 · 聯絡我們</span>
+    <span class="section-kicker">06 · 聯絡我們</span>
     <hr class="section-rule" />
     <div class="contact-split">
       <div class="contact-info">
@@ -631,7 +693,8 @@ a:hover { color: var(--color-accent-200); }
         <li><a href="#">首頁</a></li>
         <li><a href="#projects">精選土地</a></li>
         <li><a href="#news">市場動態</a></li>
-        <li><a href="#articles">建築美學</a></li>
+        <li><a href="#video">土地影音</a></li>
+    <li><a href="#articles">建築美學</a></li>
         <li><a href="columns.html">名家專欄</a></li>
         <li><a href="https://www.yi-ding.com.tw/about.php?pid=2">品牌介紹</a></li>
         <li><a href="#contact">聯絡我們</a></li>
