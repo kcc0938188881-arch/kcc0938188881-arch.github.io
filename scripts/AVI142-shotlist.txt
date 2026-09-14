@@ -7,3 +7,5 @@ DJI_0504.JPG
 DJI_0507.JPG
 pic5.jpg
 pic1.jpg
+map-terrain.png|still
+map-zoning.png|still

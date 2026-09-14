@@ -33,7 +33,8 @@ XFADE="${XFADE:-1.0}"
 VOL="${VOL:-0.30}"
 FADE_IN="${FADE_IN:-3.0}"
 FADE_OUT="${FADE_OUT:-4.0}"
-FPS="${FPS:-30}"
+FPS="${FPS:-60}"
+CRF="${CRF:-20}"          # 畫質：數字越小越好越大檔，22~24 適合傳 LINE
 W="${W:-1920}"
 H="${H:-1080}"
 
@@ -47,19 +48,22 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
 # ── 1. 收集照片 ──────────────────────────────────────────────
-PHOTOS=()
+PHOTOS=(); STILL=()
 if [[ -f "$SRC/shotlist.txt" ]]; then
   echo "▸ 依 shotlist.txt 指定順序排列"
   while IFS= read -r line || [[ -n "$line" ]]; do
     line="${line%$'\r'}"
     [[ -z "$line" || "$line" == \#* ]] && continue
-    if   [[ -f "$SRC/$line" ]]; then PHOTOS+=("$SRC/$line")
-    elif [[ -f "$line"      ]]; then PHOTOS+=("$line")
-    else echo "  ! 找不到：$line（略過）" >&2
+    name="${line%%|*}"; opt=""
+    [[ "$line" == *"|"* ]] && opt="${line#*|}"
+    if   [[ -f "$SRC/$name" ]]; then PHOTOS+=("$SRC/$name")
+    elif [[ -f "$name"      ]]; then PHOTOS+=("$name")
+    else echo "  ! 找不到：$name（略過）" >&2; continue
     fi
+    [[ "$opt" == "still" ]] && STILL+=(1) || STILL+=(0)
   done < "$SRC/shotlist.txt"
 else
-  while IFS= read -r f; do PHOTOS+=("$f"); done < <(
+  while IFS= read -r f; do PHOTOS+=("$f"); STILL+=(0); done < <(
     find "$SRC" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) | sort
   )
 fi
@@ -125,11 +129,13 @@ HEAD_CARD=0
 if [[ -n "$FONT" && -n "$TITLE" ]]; then
   make_card "$WORK/00_title.png" "$TITLE" "$SUBTITLE"
   PHOTOS=("$WORK/00_title.png" "${PHOTOS[@]}")
+  STILL=(1 "${STILL[@]}")
   HEAD_CARD=1
 fi
 if [[ -n "$FONT" && -n "$ENDLINE1" ]]; then
   make_card "$WORK/zz_end.png" "$ENDLINE1" "$ENDLINE2" "$ENDLINE3"
   PHOTOS+=("$WORK/zz_end.png")
+  STILL+=(1)
 fi
 N=${#PHOTOS[@]}
 
@@ -146,17 +152,24 @@ echo "▸ 共 ${N} 段，影片長度約 ${TOTAL} 秒"
 # ── 7. 畫面：模糊底滿版 → Ken Burns → 交叉溶接 ───────────────
 INPUTS=(); FILTER=""
 ZFRAMES=$(python3 -c "print(int(round($DUR*$FPS)))")
-BIGW=$((W*2)); BIGH=$((H*2))
+BIGW=$((W*3)); BIGH=$((H*3))     # 中介解析度越高，運鏡每幀的取整誤差越小
+ZMAX="${ZMAX:-1.10}"             # 運鏡縮放幅度
 
 for i in $(seq 0 $((N-1))); do
-  INPUTS+=(-loop 1 -t "$DUR" -i "${PHOTOS[$i]}")
-  if (( i % 2 == 0 )); then
-    ZEXPR="z='min(zoom+0.00045,1.10)'"                              # 緩推近
+  # 只送一幀進 zoompan：動畫長度完全由 d 決定，on 也才會從 0 起算；
+  # 同時每張圖的縮放與模糊只算一次，速度快上一個數量級
+  INPUTS+=(-loop 1 -framerate 1 -t 1 -i "${PHOTOS[$i]}")
+  # 線性縮放：直接由幀號算出當下倍率，不累加，避免浮點誤差與停頓跳動
+  if [[ "${STILL[$i]}" == "1" ]]; then
+    ZEXPR="z='1.001'"                                                    # 圖表類：靜止不運鏡
+  elif (( i % 2 == 0 )); then
+    ZEXPR="z='1+(${ZMAX}-1)*min(on/${ZFRAMES},1)'"                       # 緩推近
   else
-    ZEXPR="z='if(lte(zoom,1.0),1.10,max(1.001,zoom-0.00045))'"      # 緩拉遠
+    ZEXPR="z='${ZMAX}-(${ZMAX}-1)*min(on/${ZFRAMES},1)'"                 # 緩拉遠
   fi
-  FILTER+="[${i}:v]scale=${BIGW}:${BIGH}:force_original_aspect_ratio=increase,crop=${BIGW}:${BIGH},gblur=sigma=32[bg${i}];"
-  FILTER+="[${i}:v]scale=${BIGW}:${BIGH}:force_original_aspect_ratio=decrease[fg${i}];"
+  # 模糊底用小圖算再放大：視覺相同，運算量差一個數量級
+  FILTER+="[${i}:v]scale=480:270:force_original_aspect_ratio=increase,crop=480:270,gblur=sigma=10,scale=${BIGW}:${BIGH}[bg${i}];"
+  FILTER+="[${i}:v]scale=${BIGW}:${BIGH}:force_original_aspect_ratio=decrease:flags=lanczos[fg${i}];"
   FILTER+="[bg${i}][fg${i}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
   FILTER+="zoompan=${ZEXPR}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${ZFRAMES}:s=${W}x${H}:fps=${FPS},"
   FILTER+="format=yuv420p,setsar=1[v${i}];"
@@ -190,7 +203,8 @@ if [[ -n "$FONT" && ${#CAP_KW[@]} -gt 0 ]]; then
     -pix_fmt rgba "$WORK/grad.png"
   GRADIDX=$N
   INPUTS+=(-loop 1 -t "$TOTAL" -i "$WORK/grad.png")
-  GRAD_OVERLAY="[${GRADIDX}:v]"
+  GRAD_OVERLAY="pending"
+  CAP_FIRST=""; CAP_LAST=""
 
   for k in $(seq 0 $(( ${#CAP_KW[@]} - 1 ))); do
     kw="${CAP_KW[$k]}"; ds="${CAP_DESC[$k]}"
@@ -201,6 +215,8 @@ if [[ -n "$FONT" && ${#CAP_KW[@]} -gt 0 ]]; then
     S=$(python3 -c "print(round(($DUR-$XFADE)*$seg + $XFADE*0.95, 3))")
     E=$(python3 -c "print(round(($DUR-$XFADE)*$seg + $XFADE*0.95 + $DUR - $XFADE*1.35, 3))")
     FA=0.45                                        # 字幕淡入／淡出秒數
+    [[ -z "$CAP_FIRST" ]] && CAP_FIRST="$S"
+    CAP_LAST="$E"
     AL="if(lt(t,$S+$FA),(t-$S)/$FA,if(gt(t,$E-$FA),($E-t)/$FA,1))"
     EN="between(t,$S,$E)"
 
@@ -219,8 +235,11 @@ if [[ -n "$FONT" && ${#CAP_KW[@]} -gt 0 ]]; then
   done
 fi
 
-if [[ -n "$GRAD_OVERLAY" ]]; then
-  FILTER+="${PREV}${GRAD_OVERLAY}overlay=0:0[grd];"
+if [[ "$GRAD_OVERLAY" == "pending" ]]; then
+  GIN=$(python3 -c "print(max(0,round(${CAP_FIRST:-0}-0.55,3)))")
+  GOUT=$(python3 -c "print(round(${CAP_LAST:-0}+0.05,3))")
+  FILTER+="[${GRADIDX}:v]format=yuva420p,fade=t=in:st=${GIN}:d=0.6:alpha=1,fade=t=out:st=${GOUT}:d=0.6:alpha=1[gradf];"
+  FILTER+="${PREV}[gradf]overlay=0:0[grd];"
   PREV="[grd]"
 fi
 
@@ -252,7 +271,7 @@ ffmpeg -y -hide_banner -loglevel warning -stats \
   "${INPUTS[@]}" \
   -filter_complex "$FILTER" \
   "${MAP[@]}" \
-  -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p -r "$FPS" \
+  -c:v libx264 -preset medium -crf "$CRF" -pix_fmt yuv420p -r "$FPS" \
   -movflags +faststart -t "$TOTAL" \
   "$OUT"
 
