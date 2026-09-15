@@ -42,7 +42,8 @@ XFADE="${XFADE:-1.0}"; VOL="${VOL:-0.30}"
 FADE_IN="${FADE_IN:-3.0}"; FADE_OUT="${FADE_OUT:-4.0}"
 FPS="${FPS:-60}"; CRF="${CRF:-20}"
 W="${W:-1920}"; H="${H:-1080}"
-ZMAX="${ZMAX:-1.10}"
+ZMAX="${ZMAX:-1.12}"      # 一般鏡頭的運鏡幅度
+ZSTILL="${ZSTILL:-1.025}"  # 圖表類的極輕微呼吸，避免畫面完全靜止而顯得卡住
 
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
@@ -136,21 +137,24 @@ BGM="${BGM:-}"
 
 # ── 畫面 ────────────────────────────────────────────────────
 INPUTS=(); FILTER=""
-BIGW=$((W*3)); BIGH=$((H*3))
+BIGW=$((W*5/2)); BIGH=$((H*5/2))
+MIDW=$((W*2)); MIDH=$((H*2))   # zoompan 的輸出尺寸，縮回 1080p 時跳動被平均掉
 for i in $(seq 0 $((N-1))); do
   INPUTS+=(-loop 1 -framerate 1 -t 1 -i "${FILES[$i]}")
   zf=$(python3 -c "print(int(round(${SECS[$i]}*$FPS)))")
   mode="${MODES[$i]}"
   case "$mode" in
-    still|count:*|box:*) ZEXPR="z='1.001'" ;;
+    still|count:*|box:*)
+       # 圖表不做推近（文字會晃），但給極輕微的縮放讓畫面保持呼吸
+       ZEXPR="z='1+(${ZSTILL}-1)*min(on/${zf},1)'" ;;
     *) if (( i % 2 == 0 )); then ZEXPR="z='1+(${ZMAX}-1)*min(on/${zf},1)'"
        else ZEXPR="z='${ZMAX}-(${ZMAX}-1)*min(on/${zf},1)'"; fi ;;
   esac
   FILTER+="[${i}:v]scale=480:270:force_original_aspect_ratio=increase,crop=480:270,gblur=sigma=10,scale=${BIGW}:${BIGH}[bg${i}];"
   FILTER+="[${i}:v]scale=${BIGW}:${BIGH}:force_original_aspect_ratio=decrease:flags=lanczos[fg${i}];"
   FILTER+="[bg${i}][fg${i}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
-  FILTER+="zoompan=${ZEXPR}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${zf}:s=${W}x${H}:fps=${FPS},"
-  FILTER+="format=yuv420p,setsar=1[v${i}];"
+  FILTER+="zoompan=${ZEXPR}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${zf}:s=${MIDW}x${MIDH}:fps=${FPS},"
+  FILTER+="scale=${W}:${H}:flags=lanczos,format=yuv420p,setsar=1[v${i}];"
 done
 
 PREV="[v0]"
