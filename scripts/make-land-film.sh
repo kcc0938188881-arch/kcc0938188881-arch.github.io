@@ -42,8 +42,8 @@ XFADE="${XFADE:-1.0}"; VOL="${VOL:-0.30}"
 FADE_IN="${FADE_IN:-3.0}"; FADE_OUT="${FADE_OUT:-4.0}"
 FPS="${FPS:-60}"; CRF="${CRF:-20}"
 W="${W:-1920}"; H="${H:-1080}"
-ZMAX="${ZMAX:-1.12}"      # 一般鏡頭的運鏡幅度
-ZSTILL="${ZSTILL:-1.025}"  # 圖表類的極輕微呼吸，避免畫面完全靜止而顯得卡住
+ZMAX="${ZMAX:-1.15}"      # 一般鏡頭的運鏡幅度
+ZSTILL="${ZSTILL:-1.05}"  # 圖表類的極輕微呼吸，避免畫面完全靜止而顯得卡住
 
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
 
