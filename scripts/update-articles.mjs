@@ -22,9 +22,10 @@ const BLOCK = ['抽獎', '折扣', '優惠', '團購', '開箱推薦', '促銷',
 
 const MAX_INDEX = 4;   // 首頁卡片數
 const MAX_LIST = 8;    // 文章頁列數
+const MAX_AGE_DAYS = 180; // 只收半年內的文章
 
 const FEED = 'https://news.google.com/rss/search?q=' +
-  encodeURIComponent(SITES.map(s => `site:${s}`).join(' OR ')) +
+  encodeURIComponent('(' + SITES.map(s => `site:${s}`).join(' OR ') + ') when:180d') +
   '&hl=zh-TW&gl=TW&ceid=TW:zh-Hant';
 
 const SOURCE_LABEL = {
@@ -45,6 +46,7 @@ function decode(s) {
     .replace(/&#x([0-9a-f]+);/gi, (_, x) => String.fromCharCode(parseInt(x, 16)))
     .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ').replace(/\u00a0/g, ' ')
     .trim();
 }
 
@@ -85,9 +87,14 @@ function ymd(pubDate) {
 }
 
 function excerpt(item) {
-  const t = (item.desc || '').replace(new RegExp(esc(item.title), 'g'), '').trim();
-  const clean = t.replace(/^[\s·—-]+/, '');
-  return clean.length > 90 ? clean.slice(0, 88) + '…' : (clean || item.title);
+  let t = (item.desc || '').replace(/&nbsp;/g, ' ').replace(/\u00a0/g, ' ');
+  t = t.split(item.title).join('');
+  if (item.source) t = t.split(item.source).join('');
+  for (const s of SITES) t = t.split(s).join('');
+  t = t.replace(/\s+/g, ' ').replace(/^[\s·—\-|]+|[\s·—\-|]+$/g, '').trim();
+  // Google News 摘要常只有標題＋媒體名，太短就用固定說明
+  if (t.length < 15) return '點擊閱讀原文全文。';
+  return t.length > 90 ? t.slice(0, 88) + '…' : t;
 }
 
 function replaceBlock(html, inner) {
@@ -103,9 +110,13 @@ const main = async () => {
   if (!res.ok) throw new Error(`RSS ${res.status}`);
   const items = parseItems(await res.text());
 
+  const cutoff = Date.now() - MAX_AGE_DAYS * 86400000;
+  items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
   const seen = new Set();
   const picked = [];
   for (const it of items) {
+    const t = new Date(it.pubDate).getTime();
+    if (isNaN(t) || t < cutoff) continue;   // 排除舊文章
     const site = siteOf(it);
     if (!site) continue;
     if (!KEYWORDS.some(k => it.title.includes(k))) continue;

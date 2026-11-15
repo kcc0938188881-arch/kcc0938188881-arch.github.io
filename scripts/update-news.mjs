@@ -24,9 +24,10 @@ const TOPIC = ['土地', '建地', '工業區', '產業園區', '廠房', '重�
 const BLOCK = ['詐騙', '命案', '火警', '抽獎', '優惠', '團購', '限時', '直播', '爆料'];
 
 const MAX = 8;
+const MAX_AGE_DAYS = 60; // 只收兩個月內的新聞
 
 const FEED = 'https://news.google.com/rss/search?q=' +
-  encodeURIComponent('(' + SITES.map(s => `site:${s}`).join(' OR ') + ') (台南 OR 高雄 OR 南科) (土地 OR 房市 OR 產業園區 OR 廠房)') +
+  encodeURIComponent('(' + SITES.map(s => `site:${s}`).join(' OR ') + ') (台南 OR 高雄 OR 南科) (土地 OR 房市 OR 產業園區 OR 廠房) when:60d') +
   '&hl=zh-TW&gl=TW&ceid=TW:zh-Hant';
 
 const LABEL = {
@@ -48,6 +49,7 @@ function decode(s) {
     .replace(/&#x([0-9a-f]+);/gi, (_, x) => String.fromCharCode(parseInt(x, 16)))
     .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ').replace(/\u00a0/g, ' ')
     .trim();
 }
 
@@ -92,10 +94,14 @@ const main = async () => {
   if (!res.ok) throw new Error(`RSS ${res.status}`);
   const items = parseItems(await res.text());
 
+  const cutoff = Date.now() - MAX_AGE_DAYS * 86400000;
+  items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
   const seenTitle = new Set();
   const seenLink = new Set();
   const picked = [];
   for (const it of items) {
+    const t = new Date(it.pubDate).getTime();
+    if (isNaN(t) || t < cutoff) continue;   // 排除舊新聞
     const site = siteOf(it);
     if (!site) continue;
     if (!MUST.some(k => it.title.includes(k))) continue;
